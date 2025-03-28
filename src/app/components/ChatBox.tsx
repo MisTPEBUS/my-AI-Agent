@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import Fuse from "fuse.js";
+import { Mic, Send } from "lucide-react";
+import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
 
 // 🧠 本地 QA 資料
 const qaMap = [
@@ -44,12 +46,12 @@ const qaMap = [
     answer: "目前班次正常，如有異動會即時公告於站牌或官網。",
   },
   {
-    question: "我在XX站車子什麼時候會來?",
-    answer: "您所在的 XX 站預計 5 分鐘後抵達下一班車，請注意現場公告。",
+    question: "我在捷運新店站車子什麼時候會來?",
+    answer: "您所在的 預計 5 分鐘後抵達下一班車，請注意現場公告。",
   },
   {
-    question: "這班車會到XX路嗎？",
-    answer: "本班車有行經 XX 路，詳細站點請參考官方路線圖。",
+    question: "這班車會到正義北路嗎？",
+    answer: "本班車有行經 不會到會到正義北路，詳細站點請參考官方路線圖。",
   },
   {
     question: "我可以在哪裡轉搭捷運/台鐵/高鐵？",
@@ -64,8 +66,8 @@ const qaMap = [
     answer: "起點為 A 站，終點為 B 站，詳細請查詢路線圖。",
   },
   {
-    question: "這班車有停靠XX站嗎？",
-    answer: "有，本班車停靠 XX 站，若臨時變動會另行公告。",
+    question: "這班車有停靠松德站嗎？",
+    answer: "有，本班車停靠 松德 站，若臨時變動會另行公告。",
   },
   {
     question: "這條路線的發車站在哪裡？",
@@ -76,23 +78,23 @@ const qaMap = [
     answer: "會停靠共計 20 個站點，請參考站牌或官網列表。",
   },
   {
-    question: "我要去XX，該在哪裡轉車？",
-    answer: "您可在主要轉乘站轉乘其他路線前往 XX。",
+    question: "我要去台北，該在哪裡轉車？",
+    answer: "您可在主要轉乘站轉乘捷運。",
   },
   {
     question: "請問這班車返程也是在同一個站牌搭乘嗎？",
     answer: "多數站點上下車同站牌，例外處會標示『對面月台搭乘』。",
   },
   {
-    question: "這路線有繞行XX區域嗎？",
-    answer: "部分班次行經 XX 區域，請查詢時刻表中的班次備註。",
+    question: "這路線有繞行新店區域嗎？",
+    answer: "可以搭乘棕7，部分班次行經 [新店區域]，請查詢時刻表中的班次備註。",
   },
   {
     question: "請問搭車多少錢？",
     answer: "一般票價為新台幣 15 元起，依搭乘區間與優惠身份計價。",
   },
   {
-    question: "悠遊卡被多扣錢怎麼辦？",
+    question: "悠遊卡溢扣被多扣錢怎麼辦？",
     answer: "請持卡至客服中心或撥打 1999 市民專線申訴與查詢。",
   },
   {
@@ -101,25 +103,18 @@ const qaMap = [
   },
   {
     question: "有學生票或老人票嗎？",
-    answer: "有，請持學生證或敬老卡上車刷卡即可享優惠票價。",
+    answer: "持學生證或敬老卡上車刷卡即可享優惠票價。",
   },
 ];
 
-// 🧠 模糊比對函式
 const getAnswer = (input: string): string | null => {
-  const fuse = new Fuse(qaMap, {
-    keys: ["question"],
-    threshold: 0.4,
-  });
-
-  const cleanedInput = input
+  const fuse = new Fuse(qaMap, { keys: ["question"], threshold: 0.4 });
+  const cleaned = input
     .toLowerCase()
     .replace(/[？?。、！!,.]/g, "")
     .trim();
-  const result = fuse.search(cleanedInput);
-
-  if (result.length > 0) return result[0].item.answer;
-  return null;
+  const result = fuse.search(cleaned);
+  return result.length > 0 ? result[0].item.answer : null;
 };
 
 const ChatBox = () => {
@@ -128,14 +123,20 @@ const ChatBox = () => {
   ]);
   const [input, setInput] = useState("");
   const chatRef = useRef<HTMLDivElement>(null);
-
   const token = process.env.NEXT_PUBLIC_OPENAI_KEY;
+  const { start, isListening } = useSpeechRecognition();
 
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleMicClick = () => {
+    start(({ transcript }) => {
+      setInput(transcript);
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,11 +156,14 @@ const ChatBox = () => {
       return;
     }
 
+    const loadingMsg = { role: "loading", content: "正在輸入中..." };
+    setMessages((prev) => [...prev, loadingMsg]);
+
     try {
       const { data } = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-4.0-turbo",
+          model: "gpt-4",
           messages: [
             {
               role: "user",
@@ -178,12 +182,12 @@ const ChatBox = () => {
       );
 
       const reply = data.choices[0].message;
-      setMessages((prev) => [...prev, reply]);
+      setMessages((prev) => [...prev.slice(0, -1), reply]);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setMessages((prev) => [
-        ...prev,
-        { role: "system", content: "很抱歉，我發生錯誤了。" },
+        ...prev.slice(0, -1),
+        { role: "system", content: "很抱歉，查詢發生錯誤，請稍後再試。" },
       ]);
     }
   };
@@ -205,6 +209,19 @@ const ChatBox = () => {
                 className="rounded-full"
               />
             </div>
+          ) : msg.role === "loading" ? (
+            <div key={index} className="flex items-center gap-2">
+              <Image
+                src="/images/chatgpt-logo.png"
+                alt="ai"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <p className="bg-gray-100 p-3 rounded max-w-[80%] animate-pulse">
+                正在輸入中<span className="animate-bounce">...</span>
+              </p>
+            </div>
           ) : (
             <div key={index} className="flex items-center gap-2">
               <Image
@@ -221,7 +238,17 @@ const ChatBox = () => {
           )
         )}
       </div>
-      <form onSubmit={handleSubmit} className="mt-4">
+      <form onSubmit={handleSubmit} className="mt-4 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={handleMicClick}
+          className={`p-2 rounded-full ${
+            isListening ? "bg-red-500" : "bg-gray-200"
+          }`}
+          title="語音輸入"
+        >
+          <Mic size={20} />
+        </button>
         <input
           type="text"
           placeholder="開始聊天..."
@@ -229,6 +256,9 @@ const ChatBox = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
+        <button type="submit" className="p-2 rounded bg-blue-500 text-white">
+          <Send size={20} />
+        </button>
       </form>
     </div>
   );
