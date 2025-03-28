@@ -212,7 +212,7 @@ const ChatBox = () => {
           ) : msg.role === "loading" ? (
             <div key={index} className="flex items-center gap-2">
               <Image
-                src="/images/chatgpt-logo.png"
+                src="/images/AIicon.png"
                 alt="ai"
                 width={40}
                 height={40}
@@ -225,7 +225,7 @@ const ChatBox = () => {
           ) : (
             <div key={index} className="flex items-center gap-2">
               <Image
-                src="/images/chatgpt-logo.png"
+                src="/images/AIicon.png"
                 alt="ai"
                 width={40}
                 height={40}
