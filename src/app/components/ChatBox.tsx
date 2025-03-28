@@ -124,6 +124,7 @@ const ChatBox = () => {
       const reply = data.choices[0].message;
       setMessages((prev) => [...prev, reply]);
     } catch (err) {
+      console.log(err);
       setMessages((prev) => [
         ...prev,
         { role: "system", content: "很抱歉，我發生錯誤了。" },
