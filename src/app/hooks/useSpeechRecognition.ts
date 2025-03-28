@@ -6,13 +6,39 @@ export interface SpeechRecognitionResult {
   isFinal: boolean;
 }
 
+interface SpeechRecognitionAPI {
+  new (): SpeechRecognitionInstance;
+}
+
+interface SpeechRecognitionInstance {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  start(): void;
+  stop(): void;
+  onstart: (() => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+}
+
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
 export const useSpeechRecognition = () => {
   const [isListening, setIsListening] = useState(false);
 
   const start = (onResult: (result: SpeechRecognitionResult) => void) => {
     const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+      (window as unknown as { SpeechRecognition: SpeechRecognitionAPI })
+        .SpeechRecognition ||
+      (window as unknown as { webkitSpeechRecognition: SpeechRecognitionAPI })
+        .webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
       alert("此瀏覽器不支援語音辨識，請使用 Chrome");
@@ -26,12 +52,12 @@ export const useSpeechRecognition = () => {
 
     recognition.onstart = () => setIsListening(true);
     recognition.onend = () => setIsListening(false);
-    recognition.onerror = (event: any) => {
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error("語音辨識錯誤:", event.error);
       setIsListening(false);
     };
 
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = event.results[0][0].transcript;
       onResult({ transcript, isFinal: event.results[0].isFinal });
     };
