@@ -341,26 +341,31 @@ const ChatBox = () => {
     if (e) e.preventDefault();
     const finalInput = overrideInput ?? input;
     if (!finalInput.trim()) return;
-    // ✅ 設定為非首次，只會觸發一次
 
     const userMsg = { role: "user", content: finalInput };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     setInput("");
 
-    // 👉 嘗試從本地取得答案
-    const localAnswer = getAnswer(finalInput);
-    if (localAnswer) {
-      setMessages((prev) => [
-        ...prev,
-        { role: "system", content: localAnswer },
-      ]);
-      return; // ❗️直接結束，不發送 API
-    }
-
+    // 先加 loading 效果
     const loadingMsg = { role: "loading", content: "正在輸入中..." };
     setMessages((prev) => [...prev, loadingMsg]);
 
+    // 檢查本地回答
+    const localAnswer = getAnswer(finalInput);
+
+    if (localAnswer) {
+      setTimeout(() => {
+        // 移除 loading，加入回答
+        setMessages((prev) => [
+          ...prev.slice(0, -1), // 去掉 loading
+          { role: "system", content: localAnswer },
+        ]);
+      }, 2000);
+      return;
+    }
+
+    // 若本地沒命中，走 GPT
     try {
       const { data } = await axios.post(
         "https://api.openai.com/v1/chat/completions",
@@ -384,13 +389,19 @@ const ChatBox = () => {
       );
 
       const reply = data.choices[0].message;
-      setMessages((prev) => [...prev.slice(0, -1), reply]);
+
+      // 延遲 2 秒再顯示 GPT 回答
+      setTimeout(() => {
+        setMessages((prev) => [...prev.slice(0, -1), reply]);
+      }, 2000);
     } catch (err) {
       console.error(err);
-      setMessages((prev) => [
-        ...prev.slice(0, -1),
-        { role: "system", content: "很抱歉，查詢發生錯誤，請稍後再試。" },
-      ]);
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev.slice(0, -1),
+          { role: "system", content: "很抱歉，查詢發生錯誤，請稍後再試。" },
+        ]);
+      }, 2000);
     }
   };
 
