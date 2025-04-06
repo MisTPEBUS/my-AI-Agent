@@ -309,6 +309,7 @@ const getAnswer = (input: string): string | null => {
 };
 
 const ChatBox = () => {
+  const [isFirstMessage, setIsFirstMessage] = useState(true);
   const [messages, setMessages] = useState([
     {
       role: "system",
@@ -333,6 +334,7 @@ const ChatBox = () => {
   };
 
   const handleCardSelect = (text: string) => {
+    setIsFirstMessage(false);
     setInput(text); // 可選：如果你想讓 input 顯示被點的文字
     handleSubmit(undefined, text);
   };
@@ -341,6 +343,8 @@ const ChatBox = () => {
     if (e) e.preventDefault();
     const finalInput = overrideInput ?? input;
     if (!finalInput.trim()) return;
+    // ✅ 設定為非首次，只會觸發一次
+    setIsFirstMessage(false);
 
     const userMsg = { role: "user", content: finalInput };
     const newMessages = [...messages, userMsg];
@@ -399,7 +403,7 @@ const ChatBox = () => {
         {messages.map((msg, index) =>
           msg.role === "user" ? (
             <div key={index} className="flex justify-end items-center gap-2">
-              <p className="bg-blue-100 p-3 rounded max-w-[80%]">
+              <p className="bg-blue-100 p-3 rounded max-w-[100%]">
                 {msg.content}
               </p>
               <Image
@@ -419,7 +423,7 @@ const ChatBox = () => {
                 height={40}
                 className="rounded-full"
               />
-              <p className="bg-gray-100 p-3 rounded max-w-[80%] animate-pulse">
+              <p className="bg-gray-100 p-3 rounded max-w-[100%] animate-pulse">
                 正在輸入中<span className="animate-bounce">...</span>
               </p>
             </div>
@@ -433,12 +437,14 @@ const ChatBox = () => {
                 className="rounded-full"
               />
               <div
-                className="bg-gray-100 p-3 rounded max-w-[80%] prose prose-sm"
+                className="bg-gray-100 p-3 rounded max-w-[100%] prose prose-sm"
                 dangerouslySetInnerHTML={{ __html: msg.content }}
               />
-              <div>
-                <CardCarousel cards={menuCards} onSelect={handleCardSelect} />
-              </div>
+              {index === 0 && (
+                <div>
+                  <CardCarousel cards={menuCards} onSelect={handleCardSelect} />
+                </div>
+              )}
             </div>
           )
         )}

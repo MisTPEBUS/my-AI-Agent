@@ -48,7 +48,7 @@ export default function ChatComponent() {
             }`}
           >
             <p
-              className={`rounded p-3 max-w-[80%] ${
+              className={`rounded p-3 max-w-[100%] ${
                 msg.role === "user" ? "bg-blue-100" : "bg-gray-200"
               }`}
             >
