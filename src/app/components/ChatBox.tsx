@@ -309,7 +309,6 @@ const getAnswer = (input: string): string | null => {
 };
 
 const ChatBox = () => {
-  const [isFirstMessage, setIsFirstMessage] = useState(true);
   const [messages, setMessages] = useState([
     {
       role: "system",
@@ -334,7 +333,6 @@ const ChatBox = () => {
   };
 
   const handleCardSelect = (text: string) => {
-    setIsFirstMessage(false);
     setInput(text); // 可選：如果你想讓 input 顯示被點的文字
     handleSubmit(undefined, text);
   };
@@ -344,7 +342,6 @@ const ChatBox = () => {
     const finalInput = overrideInput ?? input;
     if (!finalInput.trim()) return;
     // ✅ 設定為非首次，只會觸發一次
-    setIsFirstMessage(false);
 
     const userMsg = { role: "user", content: finalInput };
     const newMessages = [...messages, userMsg];
