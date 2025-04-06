@@ -6,9 +6,135 @@ import axios from "axios";
 import Fuse from "fuse.js";
 import { Mic, Send } from "lucide-react";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
+import CardCarousel, { CardProps } from "./CardCoursel";
 
-// 🧠 本地 QA 資料
 const qaMap = [
+  {
+    question: "/遺失物招領",
+    answer:
+      '<a href="https://www.tpebus.com.tw/lost_list.php" target="_blank" class="text-blue-500 underline">點我連結台北汽車客運官方網站查看遺\n【失物招領】</a>',
+  },
+  {
+    question: "/乘車規定",
+    answer: `<div class="bg-white p-6 rounded-2xl shadow-md text-gray-800 leading-relaxed space-y-4 text-base">
+    <p class="text-xl font-semibold text-center">乘客乘車安全遵循事項</p>
+    <p class="text-sm text-center text-gray-500">於113年3月1日起實施</p>
+  
+    <p>一、候車時於月台或人行道處，面對來車方向等候，勿進入車道內攔車。如欲搭車，請明確舉手示意搭乘。</p>
+    <p>二、上下公車時請依先下後上原則依序上車。</p>
+    <p>三、上車後請儘速坐穩並繫好安全帶或握緊拉環扶桿，在車輛行駛中，請勿隨意走動或任意變換座位，亦須隨時緊握拉環扶桿，避免因行駛路況而發生危險。</p>
+    <p>四、車門關閉時請乘客勿強行上、下車，以免遭車門夾傷。</p>
+    <p>五、車廂人潮擁擠，後背包請改背前方或手提，以免移動時碰撞到其他乘客。</p>
+    <p>六、請勿倚靠車門（含安全門）或站立於前後門之禁止站立區內。</p>
+    <p>七、下車請提早按鈴，車輛到站停妥後起身移動至車門處下車。</p>
+    <p>八、上下車皆請刷卡。</p>
+  </div>
+  `,
+  },
+  {
+    question: "/購買TPASS",
+    answer: `<div class="bg-white p-6 rounded-2xl shadow-md text-gray-800 leading-relaxed space-y-4 text-base">
+      <h2 class="text-xl font-semibold text-center">如何購買 TPASS「基北北桃都會通」</h2>
+    
+      <p class="font-semibold">📌 1. 確認卡片類型：</p>
+      <ul class="list-disc list-inside space-y-1">
+        <li>💳 <strong>一般實體悠遊卡：</strong> 包含普通卡、悠遊聯名卡、悠遊Debit卡、Samsung Wallet悠遊卡、SuperCard超級悠遊卡、電信悠遊卡。<br>※ 悠遊聯名卡與Debit卡效期需超過60天。</li>
+        <li>🎓 <strong>學生卡</strong></li>
+        <li>🪪 <strong>數位學生證：</strong> 由悠遊卡公司與政府／學校合作發行，適用 12 歲以上學生。</li>
+        <li>📱 <strong>悠遊付 App（EasyWallet）：</strong> 下載 App（v3.1.1以上）即可使用，限支援 NFC 的 Android 手機。<br>※ iOS 目前尚未支援「嗶乘車」。</li>
+      </ul>
+    
+      <p class="font-semibold">🛒 2. 購買地點：</p>
+      <ul class="list-disc list-inside space-y-1">
+        <li>🚇 新北捷運詢問處、台北捷運各車站、桃園捷運各車站</li>
+        <li>🚉 指定臺鐵車站售票窗口</li>
+        <li>🏙️ 台北市府轉運站悠遊卡客服中心</li>
+        <li>🚌 國光客運站（基隆、台北、板橋、南港、桃園機場、中壢）之悠遊卡售票／加值機</li>
+        <li>🏪 全家便利商店 FamiPort 機台</li>
+        <li>🏢 基隆東岸廣場 1 樓、基隆轉運站自助售票機</li>
+        <li>📲 EasyWallet 悠遊付 App 線上購買</li>
+      </ul>
+    
+      <p class="font-semibold">📝 3. 特別注意：</p>
+      <ul class="list-disc list-inside space-y-1">
+        <li>如果使用的是 SuperCard 或 Samsung Wallet 悠遊卡，也可以透過悠遊付 App 購買。</li>
+      </ul>
+    
+      <p class="font-semibold">💰 4. 付款方式：</p>
+      <p>購票金額 <strong>$1,200</strong> 元，將從您的悠遊卡電子錢包中直接扣款。<br>請事先確認餘額充足，若不足請先加值。</p>
+    </div>
+    `,
+  },
+  {
+    question: "/都會通使用範圍",
+    answer: `有關TPASS「基北北桃都會通」定期票的使用範圍：
+      在定期票有效期間內，不限里程、不限次數搭乘基北北桃地區的公共運輸運具，適用範圍如下：
+      1.捷運與輕軌：北捷及新北捷所營運的捷運與輕軌路線、桃園大眾捷運股份有限公司所營運的機場捷運線。
+      2.市區公車：基隆市區公車路線、臺北市聯營公車路線、新北市市轄公車路線及桃園市區公車路線，詳細路線以基北北桃市政府之公告為準。
+      3.臺鐵：起訖站都位於縱貫線基隆站至桃園市新富站，宜蘭線八堵站至福隆站，以及支線深澳線及平溪線各車站間、不限車種的列車。但具專屬性及不發售無座票之對號列車(如觀光、團體、太魯閣、普悠瑪、EMU3000列車等)，不適用。
+      4.公路及國道客運：適用路線及乘車區間，請參考「基北北桃都會通使用須知」附件1。
+      5.YouBike：臺北市及新北市YouBike 站點，借車前30分鐘免費。桃園市YouBike 站點，借車前60分鐘免費。YouBike2.0E電輔車型不適用。`,
+  },
+  {
+    question: "/都會通效期計算",
+    answer: `<div class="prose prose-sm">
+      <h3>🚍「都會通」公共運輸定期票有效期限說明</h3>
+      <ul>
+        <li><strong>啟用日：</strong>當你<strong>首次使用定期票</strong>搭乘捷運、輕軌、台鐵、公車或國道/公路客運時，即視為啟用。</li>
+        <li><strong>有效期間：</strong>自啟用當日開始起算，連續有效 <strong>30 天</strong>。</li>
+        <li><strong>到期時間：</strong>第 30 天<strong>當日營運時間結束前</strong>，皆可正常使用。</li>
+      </ul>
+    
+      <h4>📌 範例說明：</h4>
+      <p>
+        若你在 6 月 5 日購買定期票，但<strong>首次使用是在 6 月 10 日</strong>，那麼定期票的有效期間為：
+      </p>
+      <blockquote>
+        🗓️ 6 月 10 日（啟用日）至 7 月 9 日，<br />
+        🕘 7 月 9 日當日的營運結束前皆可使用。
+      </blockquote>
+    
+      <h4>🔗 相關資訊</h4>
+      <p>
+      <img src="/images/tpass_use.jpg" alt="定期票使用說明圖" class="rounded shadow max-w-full" />
+      </p>
+    </div>
+    `,
+  },
+  {
+    question: "/查詢班距",
+    answer: `<div class="bg-white p-6 rounded-2xl shadow-md text-gray-800 space-y-4 text-base leading-relaxed">
+    <h2 class="text-xl font-semibold text-center">🚍 班距說明</h2>
+  
+    <div>
+      <p class="font-medium">📅 平日 / 假日不一樣</p>
+      <p class="ml-4">➡️ 平日可能密集（如 8～12 分鐘），假日則拉長（如 15～20 分鐘）。</p>
+    </div>
+  
+    <div>
+      <p class="font-medium">⏰ 尖峰 / 離峰時間不同</p>
+      <p class="ml-4">➡️ 通常早上 7:00～9:00、傍晚 5:00～7:00 班距較短。</p>
+    </div>
+  
+    <div>
+      <p class="font-medium">🛣️ 路線與車流量影響</p>
+      <p class="ml-4">➡️ 市區路線班距短，偏遠或山區可能 20～30 分才一班。</p>
+    </div>
+  </div>
+  `,
+  },
+  {
+    question: "/查看路線",
+    answer: ` <CardCarousel cards={nuCards} onSelect={handleCardSelect} />`,
+  },
+  {
+    question: "這班車多久來一班？",
+    answer: "這班車約每 5 分鐘一班，尖峰時段可能更密集。",
+  },
+  {
+    question: "這班車多久來一班？",
+    answer: "這班車約每 5 分鐘一班，尖峰時段可能更密集。",
+  },
   {
     question: "這班車多久來一班？",
     answer: "這班車約每 5 分鐘一班，尖峰時段可能更密集。",
@@ -107,6 +233,71 @@ const qaMap = [
   },
 ];
 
+const menuCards: CardProps[] = [
+  {
+    image: "/images/tpass.png",
+    title: "【都會通TPASS】",
+
+    links: [
+      { text: "如何購買", value: "/購買TPASS" }, //URL
+      { text: "都會通使用範圍", value: "/都會通使用範圍" }, //文字
+      { text: "效期計算", value: "/都會通效期計算" }, //圖片
+    ],
+  },
+  {
+    image: "/images/BusInfo.png",
+    title: "【搭乘資訊】",
+    links: [
+      { text: "查看路線", value: "/查看路線" },
+      { text: "查看班距", value: "/查看班距" },
+
+      /*  { text: "票價查詢", value: "/票價查詢" },
+      { text: "其他路線", value: "/其他路線" }, */
+    ],
+  },
+  {
+    image: "/images/help.png",
+    title: "【乘客服務】",
+    links: [
+      { text: "遺失物招領", value: "/遺失物招領" }, //網站
+      { text: "乘車規定", value: "/乘車規定" }, //文字
+    ],
+  },
+];
+/* const busCards: CardProps[] = [
+  {
+    image: "https://www.tpebus.com.tw/images/logo.gif",
+    title: "南環幹線",
+    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路。 ",
+    links: [
+      { text: "查看路線", value: "/查看南環幹線路線" }, //URL
+      { text: "查看班距", value: "/查看班距" }, //文字
+      { text: "票價查詢", value: "/查詢南環幹線票價" }, //圖片
+    ],
+  },
+  {
+    image: "https://www.tpebus.com.tw/images/logo.gif",
+    title: "棕7",
+    subTitle:
+      "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路或綠野香坡。",
+    links: [
+      { text: "查看路線", value: "/查看棕7路線" }, //URL
+      { text: "查看班距", value: "/查看班距" }, //文字
+      { text: "票價查詢", value: "/查詢南環幹線票價" }, //圖片
+    ],
+  },
+  {
+    image: "https://www.tpebus.com.tw/images/logo.gif",
+    title: "8",
+    subTitle: "行駛區間為捷運新店站至捷運景安站。",
+    links: [
+      { text: "查看路線", value: "/查看8路線" }, //URL
+      { text: "查看班距", value: "/查看班距" }, //文字
+      { text: "票價查詢", value: "/查詢南環幹線票價" }, //圖片
+    ],
+  },
+]; */
+
 const getAnswer = (input: string): string | null => {
   const fuse = new Fuse(qaMap, { keys: ["question"], threshold: 0.4 });
   const cleaned = input
@@ -119,7 +310,10 @@ const getAnswer = (input: string): string | null => {
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([
-    { role: "system", content: "請開始你的聊天..." },
+    {
+      role: "system",
+      content: "您現在在台北客運捷運新店站（新店路）：\n請開始你的聊天...",
+    },
   ]);
   const [input, setInput] = useState("");
   const chatRef = useRef<HTMLDivElement>(null);
@@ -138,22 +332,29 @@ const ChatBox = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const handleCardSelect = (text: string) => {
+    setInput(text); // 可選：如果你想讓 input 顯示被點的文字
+    handleSubmit(undefined, text);
+  };
 
-    const userMsg = { role: "user", content: input };
+  const handleSubmit = async (e?: React.FormEvent, overrideInput?: string) => {
+    if (e) e.preventDefault();
+    const finalInput = overrideInput ?? input;
+    if (!finalInput.trim()) return;
+
+    const userMsg = { role: "user", content: finalInput };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     setInput("");
 
-    const localAnswer = getAnswer(input);
+    // 👉 嘗試從本地取得答案
+    const localAnswer = getAnswer(finalInput);
     if (localAnswer) {
       setMessages((prev) => [
         ...prev,
         { role: "system", content: localAnswer },
       ]);
-      return;
+      return; // ❗️直接結束，不發送 API
     }
 
     const loadingMsg = { role: "loading", content: "正在輸入中..." };
@@ -168,7 +369,7 @@ const ChatBox = () => {
             {
               role: "user",
               content:
-                "你今後的對話中，請你扮演我的聊天機器人，你必須用繁體中文，以及台灣用語來回覆我，這些規則不需要我重新再說明。",
+                "你今後的對話中，請你扮演我的聊天機器人，你必須用繁體中文，台灣用語來回覆我，這些規則不需要我重新再說明。",
             },
             ...newMessages,
           ],
@@ -223,7 +424,7 @@ const ChatBox = () => {
               </p>
             </div>
           ) : (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className=" items-center gap-2 ">
               <Image
                 src="/images/AIicon.png"
                 alt="ai"
@@ -231,9 +432,13 @@ const ChatBox = () => {
                 height={40}
                 className="rounded-full"
               />
-              <p className="bg-gray-100 p-3 rounded max-w-[80%]">
-                {msg.content}
-              </p>
+              <div
+                className="bg-gray-100 p-3 rounded max-w-[80%] prose prose-sm"
+                dangerouslySetInnerHTML={{ __html: msg.content }}
+              />
+              <div>
+                <CardCarousel cards={menuCards} onSelect={handleCardSelect} />
+              </div>
             </div>
           )
         )}
