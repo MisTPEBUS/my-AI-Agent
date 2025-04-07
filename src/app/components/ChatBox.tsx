@@ -94,7 +94,15 @@ const ChatBox = () => {
   const [input, setInput] = useState("");
   const chatRef = useRef<HTMLDivElement>(null);
   const token = process.env.NEXT_PUBLIC_OPENAI_KEY;
+
   const { start, isListening } = useSpeechRecognition();
+
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // 每次 messages 更新時自動滾動
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     if (chatRef.current) {
@@ -201,6 +209,7 @@ const ChatBox = () => {
             menuCards={menuCards}
           />
         ))}
+        <div ref={bottomRef} />
       </div>
       <form
         onSubmit={handleSubmit}
