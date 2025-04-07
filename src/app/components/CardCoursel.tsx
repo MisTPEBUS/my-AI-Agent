@@ -31,12 +31,12 @@ export default function CardCarousel({ cards, onSelect }: Props) {
         {cards.map((card, index) => (
           <div
             key={index}
-            className="w-[306px] max-w-sm bg-white rounded-2xl shadow-md object-fit: fill flex-shrink-0 border"
+            className="w-[240px] max-w-xs bg-white rounded-2xl shadow-md object-fit: fill flex-shrink-0 border"
           >
             <Image
               src={card.image}
               alt={card.title}
-              width={306}
+              width={280}
               height={200}
               className="rounded-lg mb-2 object-fill w-full h-40"
             />
