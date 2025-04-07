@@ -1,14 +1,110 @@
+// components/ChatBox.tsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import axios from "axios";
 import Fuse from "fuse.js";
+
 import { Mic, Send } from "lucide-react";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
-import CardCarousel, { CardProps } from "./CardCoursel";
+import { CardProps } from "./CardCoursel";
+import ChatMessage, { Message } from "./ChatMessage";
 
 const qaMap = [
+  {
+    question: "/查詢南環幹線票價",
+    answer: ` <div class="bg-white shadow-md rounded-xl p-4">
+    <h2 class="text-lg font-bold text-blue-700 mb-2">🟠 南環幹線</h2>
+    <ul class="text-sm text-gray-700 space-y-1">
+      <li>📍 收費方式：<strong>二段票</strong></li>
+      <li>📌 分段緩衝區：景美女中至石壁坑</li>
+      <li>💰 全票：15 元／段</li>
+      <li>👦 學生票：12 元（悠遊卡）</li>
+      <li>🧓 敬老／愛心票：8 元／段</li>
+      <li>
+        🔗 <a href="https://ebus.gov.taipei/EBus/VsSimpleMap?routeid=0113000100" target="_blank" class="text-blue-600 underline">查看路線圖</a>
+      </li>
+    </ul>
+  </div>
+    `,
+  },
+
+  {
+    question: "/查詢棕7票價",
+    answer: `<div class="bg-white shadow-md rounded-xl p-4">
+    <h2 class="text-lg font-bold text-green-700 mb-2">🟤 棕7 路線</h2>
+    <ul class="text-sm text-gray-700 space-y-1">
+      <li>📍 收費方式：<strong>二段票</strong></li>
+      <li>📌 分段緩衝區：景美女中至博嘉國小</li>
+      <li>💰 全票：15 元／段</li>
+      <li>👦 學生票：12 元（悠遊卡）</li>
+      <li>🧓 敬老／愛心票：8 元／段</li>
+      <li>
+        🔗 <a href="https://ebus.gov.taipei/EBus/VsSimpleMap?rid=10143" target="_blank" class="text-blue-600 underline">查看路線圖</a>
+      </li>
+    </ul>
+  </div>
+    `,
+  },
+  {
+    question: "/查詢棕8票價",
+    answer: ` <div class="bg-white shadow-md rounded-xl p-4">
+    <h2 class="text-lg font-bold text-purple-700 mb-2">🟣 8 路公車</h2>
+    <ul class="text-sm text-gray-700 space-y-1">
+      <li>📍 收費方式：<strong>一段票</strong></li>
+      <li>📌 分段緩衝區：無</li>
+      <li>💰 全票：15 元</li>
+      <li>👦 學生票：12 元（悠遊卡）</li>
+      <li>🧓 敬老／愛心票：8 元</li>
+      <li>
+        🔗 <a href="https://ebus.gov.taipei/EBus/VsSimpleMap?rid=16406" target="_blank" class="text-blue-600 underline">查看路線圖</a>
+      </li>
+    </ul>
+  </div>
+    `,
+  },
+  {
+    question: "/查看南環幹線路線",
+    answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
+      <h2 class="text-lg font-semibold mb-2">🚌 南環幹線 路線圖</h2>
+      <a href="/images/南環幹線路線圖.png" target="_blank" rel="noopener noreferrer">
+        <img
+          src="/images/南環幹線路線圖.png"
+          alt="南環幹線路線圖"
+          class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
+        />
+      </a>
+    </div>
+    `,
+  },
+  {
+    question: "/查看棕7路線",
+    answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
+      <h2 class="text-lg font-semibold mb-2">🚌 棕7 路線圖</h2>
+      <a href="/images/棕7路線圖.png" target="_blank" rel="noopener noreferrer">
+        <img
+          src="/images/棕7路線圖.png"
+          alt="棕7路線圖"
+          class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
+        />
+      </a>
+    </div>
+    `,
+  },
+  {
+    question: "/查看8路線",
+    answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
+      <h2 class="text-lg font-semibold mb-2">🚌 8 路線圖</h2>
+      <a href="/images/8路線圖.png" target="_blank" rel="noopener noreferrer">
+        <img
+          src="/images/8路線圖.png"
+          alt="8路線圖"
+          class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
+        />
+      </a>
+    </div>
+    `,
+  },
   {
     question: "/遺失物招領",
     answer:
@@ -237,11 +333,10 @@ const menuCards: CardProps[] = [
   {
     image: "/images/tpass.png",
     title: "【都會通TPASS】",
-
     links: [
-      { text: "如何購買", value: "/購買TPASS" }, //URL
-      { text: "都會通使用範圍", value: "/都會通使用範圍" }, //文字
-      { text: "效期計算", value: "/都會通效期計算" }, //圖片
+      { text: "如何購買", value: "/購買TPASS" },
+      { text: "都會通使用範圍", value: "/都會通使用範圍" },
+      { text: "效期計算", value: "/都會通效期計算" },
     ],
   },
   {
@@ -250,53 +345,50 @@ const menuCards: CardProps[] = [
     links: [
       { text: "查看路線", value: "/查看路線" },
       { text: "查看班距", value: "/查看班距" },
-
-      /*  { text: "票價查詢", value: "/票價查詢" },
-      { text: "其他路線", value: "/其他路線" }, */
     ],
   },
   {
     image: "/images/help.png",
     title: "【乘客服務】",
     links: [
-      { text: "遺失物招領", value: "/遺失物招領" }, //網站
-      { text: "乘車規定", value: "/乘車規定" }, //文字
+      { text: "遺失物招領", value: "/遺失物招領" },
+      { text: "乘車規定", value: "/乘車規定" },
     ],
   },
 ];
-/* const busCards: CardProps[] = [
+
+const busCards: CardProps[] = [
   {
-    image: "https://www.tpebus.com.tw/images/logo.gif",
-    title: "南環幹線",
-    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路。 ",
+    image: "/images/tpebus.png",
+    title: "路線【南環幹線】",
+    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路。",
     links: [
-      { text: "查看路線", value: "/查看南環幹線路線" }, //URL
-      { text: "查看班距", value: "/查看班距" }, //文字
-      { text: "票價查詢", value: "/查詢南環幹線票價" }, //圖片
+      { text: "查看路線", value: "/查看南環幹線路線" },
+      { text: "查看班距", value: "/查看班距" },
+      { text: "票價查詢", value: "/查詢南環幹線票價" },
     ],
   },
   {
-    image: "https://www.tpebus.com.tw/images/logo.gif",
-    title: "棕7",
-    subTitle:
-      "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路或綠野香坡。",
+    image: "/images/tpebus.png",
+    title: "路線【棕7】",
+    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
     links: [
-      { text: "查看路線", value: "/查看棕7路線" }, //URL
-      { text: "查看班距", value: "/查看班距" }, //文字
-      { text: "票價查詢", value: "/查詢南環幹線票價" }, //圖片
+      { text: "查看路線", value: "/查看棕7路線" },
+      { text: "查看班距", value: "/查看班距" },
+      { text: "票價查詢", value: "/查詢棕7票價" },
     ],
   },
   {
-    image: "https://www.tpebus.com.tw/images/logo.gif",
-    title: "8",
-    subTitle: "行駛區間為捷運新店站至捷運景安站。",
+    image: "/images/tpebus.png",
+    title: "路線【8】",
+    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
     links: [
-      { text: "查看路線", value: "/查看8路線" }, //URL
-      { text: "查看班距", value: "/查看班距" }, //文字
-      { text: "票價查詢", value: "/查詢南環幹線票價" }, //圖片
+      { text: "查看路線", value: "/查看8路線" },
+      { text: "查看班距", value: "/查看班距" },
+      { text: "票價查詢", value: "/查詢棕8票價" },
     ],
   },
-]; */
+];
 
 const getAnswer = (input: string): string | null => {
   const fuse = new Fuse(qaMap, { keys: ["question"], threshold: 0.4 });
@@ -309,12 +401,14 @@ const getAnswer = (input: string): string | null => {
 };
 
 const ChatBox = () => {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
-      content: "您現在在台北客運捷運新店站（新店路）：\n請開始你的聊天...",
+      content: "您現在在台北客運捷運新店站（新店路）：請開始你的聊天...",
     },
+    { role: "cards", content: "menuCards" },
   ]);
+
   const [input, setInput] = useState("");
   const chatRef = useRef<HTMLDivElement>(null);
   const token = process.env.NEXT_PUBLIC_OPENAI_KEY;
@@ -327,13 +421,11 @@ const ChatBox = () => {
   }, [messages]);
 
   const handleMicClick = () => {
-    start(({ transcript }) => {
-      setInput(transcript);
-    });
+    start(({ transcript }) => setInput(transcript));
   };
 
   const handleCardSelect = (text: string) => {
-    setInput(text); // 可選：如果你想讓 input 顯示被點的文字
+    setInput(text);
     handleSubmit(undefined, text);
   };
 
@@ -342,31 +434,42 @@ const ChatBox = () => {
     const finalInput = overrideInput ?? input;
     if (!finalInput.trim()) return;
 
-    const userMsg = { role: "user", content: finalInput };
+    const userMsg: Message = { role: "user", content: finalInput };
     const newMessages = [...messages, userMsg];
+
     setMessages(newMessages);
     setInput("");
 
-    // 先加 loading 效果
-    const loadingMsg = { role: "loading", content: "正在輸入中..." };
-    setMessages((prev) => [...prev, loadingMsg]);
+    setMessages((prev) => [
+      ...prev,
+      { role: "loading", content: "正在輸入中..." },
+    ]);
 
-    // 檢查本地回答
+    if (finalInput.trim() === "/查看路線") {
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev.slice(0, -1),
+          { role: "cards", content: "busCards" },
+        ]);
+      }, 2000);
+      return;
+    }
+
     const localAnswer = getAnswer(finalInput);
-
     if (localAnswer) {
       setTimeout(() => {
-        // 移除 loading，加入回答
         setMessages((prev) => [
-          ...prev.slice(0, -1), // 去掉 loading
+          ...prev.slice(0, -1),
           { role: "system", content: localAnswer },
         ]);
       }, 2000);
       return;
     }
 
-    // 若本地沒命中，走 GPT
     try {
+      const gptMessages = newMessages.filter((msg) =>
+        ["user", "system", "assistant"].includes(msg.role)
+      );
       const { data } = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -377,7 +480,7 @@ const ChatBox = () => {
               content:
                 "你今後的對話中，請你扮演我的聊天機器人，你必須用繁體中文，台灣用語來回覆我，這些規則不需要我重新再說明。",
             },
-            ...newMessages,
+            ...gptMessages,
           ],
           max_tokens: 200,
         },
@@ -389,8 +492,6 @@ const ChatBox = () => {
       );
 
       const reply = data.choices[0].message;
-
-      // 延遲 2 秒再顯示 GPT 回答
       setTimeout(() => {
         setMessages((prev) => [...prev.slice(0, -1), reply]);
       }, 2000);
@@ -408,54 +509,27 @@ const ChatBox = () => {
   return (
     <div className="max-w-md mx-auto border rounded p-4 h-[600px] flex flex-col">
       <div ref={chatRef} className="flex-1 overflow-y-auto space-y-4 pr-2">
-        {messages.map((msg, index) =>
-          msg.role === "user" ? (
-            <div key={index} className="flex justify-end items-center gap-2">
-              <p className="bg-blue-100 p-3 rounded max-w-[100%]">
-                {msg.content}
-              </p>
-              <Image
-                src="/images/user.png"
-                alt="user"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-            </div>
-          ) : msg.role === "loading" ? (
-            <div key={index} className="flex items-center gap-2">
-              <Image
-                src="/images/AIicon.png"
-                alt="ai"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <p className="bg-gray-100 p-3 rounded max-w-[100%] animate-pulse">
-                正在輸入中<span className="animate-bounce">...</span>
-              </p>
-            </div>
-          ) : (
-            <div key={index} className=" items-center gap-2 ">
-              <Image
-                src="/images/AIicon.png"
-                alt="ai"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <div
-                className="bg-gray-100 p-3 rounded max-w-[100%] prose prose-sm"
-                dangerouslySetInnerHTML={{ __html: msg.content }}
-              />
-              {index === 0 && (
-                <div>
-                  <CardCarousel cards={menuCards} onSelect={handleCardSelect} />
-                </div>
-              )}
-            </div>
-          )
-        )}
+        {messages.map((msg, index) => (
+          <ChatMessage
+            key={index}
+            message={msg}
+            onCardSelect={handleCardSelect}
+            busCards={busCards}
+            menuCards={menuCards}
+          />
+        ))}
+        <button
+          onClick={() =>
+            setMessages((prev) => [
+              ...prev,
+              { role: "cards", content: "menuCards" },
+            ])
+          }
+          className=" bottom-24 left-4 p-3 bg-white rounded-sm shadow-md border hover:bg-gray-100 transition"
+          title="選單快速鍵"
+        >
+          選單
+        </button>
       </div>
       <form onSubmit={handleSubmit} className="mt-4 flex items-center gap-2">
         <button
