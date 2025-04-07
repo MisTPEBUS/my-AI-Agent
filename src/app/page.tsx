@@ -4,6 +4,7 @@ import { Bus } from "lucide-react";
 /* import dynamic from "next/dynamic"; */
 
 import ChatBox from "./components/ChatBox";
+import { Button } from "./components/ui/button";
 
 /* const VoiceInput = dynamic(() => import("./components/VoiceInput/VoiceInput"), {
   ssr: false, // 強制只在 client render
@@ -13,21 +14,23 @@ export default function MyGPTChatPage() {
   return (
     <div className=" flex flex-col min-h-screen bg-gray-50 px-4 py-4 md:py-0 md:px-0 ">
       <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#F87171]/70 to-[#60A5FA]/90   shadow z-50 h-16 items-center">
-        <div className="container flex  gap-2 mx-auto py-2 pl-8">
-          <Bus className="w-8 h-8 " />
-          <span className=""> AI 智慧客服</span>
-          <button
+        <div className="container flex  gap-2 mx-auto py-2 pl-8 justify-between">
+          <div className="flex">
+            <Bus className="w-8 h-8 mr-4" />
+            <span className=""> AI 智慧客服</span>
+          </div>
+          <Button
             /*  onClick={() =>
             setMessages((prev) => [
               ...prev,
               { role: "cards", content: "menuCards" },
             ])
           } */
-            className=" bottom-24 left-4 p-3 bg-white rounded-sm shadow-md border hover:bg-gray-100 transition"
+            className=" bottom-24 left-4 p-3 text-black bg-white rounded-sm shadow-md border hover:bg-gray-100 transition"
             title="選單快速鍵"
           >
             選單
-          </button>
+          </Button>
         </div>
       </header>
 
