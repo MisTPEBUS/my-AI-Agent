@@ -518,18 +518,6 @@ const ChatBox = () => {
             menuCards={menuCards}
           />
         ))}
-        <button
-          onClick={() =>
-            setMessages((prev) => [
-              ...prev,
-              { role: "cards", content: "menuCards" },
-            ])
-          }
-          className=" bottom-24 left-4 p-3 bg-white rounded-sm shadow-md border hover:bg-gray-100 transition"
-          title="選單快速鍵"
-        >
-          選單
-        </button>
       </div>
       <form onSubmit={handleSubmit} className="mt-4 flex items-center gap-2">
         <button
