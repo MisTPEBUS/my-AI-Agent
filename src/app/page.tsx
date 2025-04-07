@@ -12,7 +12,7 @@ import ChatBox from "./components/ChatBox";
 export default function MyGPTChatPage() {
   return (
     <div className=" flex flex-col min-h-screen bg-gray-50 px-4 py-4 md:py-0 md:px-0 ">
-      <header className="fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#EF4B2B]/90 to-[#0047BA]/80   shadow z-50 h-16 items-center">
+      <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#EF4B2B]/90 to-[#0047BA]/80   shadow z-50 h-16 items-center">
         <div className="container flex  gap-2 mx-auto py-2 pl-8">
           <Bus className="w-8 h-8 " />
           <span className="">首都臺北汽車客運 AI 智慧客服</span>
