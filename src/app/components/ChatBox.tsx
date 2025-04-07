@@ -42,7 +42,7 @@ const menuCards: CardProps[] = [
 const busCards: CardProps[] = [
   {
     image: "/images/tpebus.png",
-    title: "路線【南環幹線】",
+    title: "【南環幹線】路線",
     subTitle: "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路。",
     links: [
       { text: "查看路線", value: "/查看南環幹線路線" },
@@ -52,7 +52,7 @@ const busCards: CardProps[] = [
   },
   {
     image: "/images/tpebus.png",
-    title: "路線【棕7】",
+    title: "【棕7】路線",
     subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
     links: [
       { text: "查看路線", value: "/查看棕7路線" },
@@ -62,7 +62,7 @@ const busCards: CardProps[] = [
   },
   {
     image: "/images/tpebus.png",
-    title: "路線【8】",
+    title: "【8】路線",
     subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
     links: [
       { text: "查看路線", value: "/查看8路線" },

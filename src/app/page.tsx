@@ -22,7 +22,7 @@ export default function MyGPTChatPage() {
       {/*  <div className="h-16" /> */}
 
       {/* Main content */}
-      <main className="min-h-[calc(100vh)] overflow-y-auto px-4 pt-4 pb-20 container mx-auto">
+      <main className="min-h-[calc(100vh)] overflow-y-auto pt-4 pb-20 container mx-auto">
         <div className=" mt-10 p-6 bg-white border rounded-lg shadow-lg">
           <ChatBox />
         </div>
