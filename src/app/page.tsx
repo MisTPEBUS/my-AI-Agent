@@ -1,5 +1,6 @@
 "use client";
 
+import { Bus } from "lucide-react";
 /* import dynamic from "next/dynamic"; */
 
 import ChatBox from "./components/ChatBox";
@@ -10,11 +11,11 @@ import ChatBox from "./components/ChatBox";
 
 export default function MyGPTChatPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="flex fixed top-0 left-0 w-full bg-white shadow z-50 h-16 items-center">
-        <div className="container px-4 flex justify-center">
-          <div className="text-lg font-semibold">智能小客服</div>
+    <div className=" flex flex-col min-h-screen bg-gray-50 ">
+      <header className="fixed top-0 left-0 w-full text-3xl font-bold  px-4 text-black  bg-gradient-to-r from-[#EF4B2B]/90 to-[#0047BA]/80   shadow z-50 h-16 items-center">
+        <div className="container flex items-center gap-2 mx-auto py-2 pl-8">
+          <Bus className="w-8 h-8 " />
+          <span className="">首都臺北汽車客運 AI 智慧客服</span>
         </div>
       </header>
 
@@ -23,7 +24,7 @@ export default function MyGPTChatPage() {
 
       {/* Main content */}
       <main className="min-h-[calc(100vh)] overflow-y-auto pt-4 pb-20 container mx-auto">
-        <div className=" mt-10 p-6 bg-white border rounded-lg shadow-lg">
+        <div className=" mt-10 md:p-6 bg-white border rounded-lg shadow-lg">
           <ChatBox />
         </div>
       </main>
