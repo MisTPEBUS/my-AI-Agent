@@ -12,21 +12,19 @@ export default function MyGPTChatPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="hidden md:flex fixed top-0 left-0 w-full bg-white shadow z-50 h-16 items-center">
+      <header className="flex fixed top-0 left-0 w-full bg-white shadow z-50 h-16 items-center">
         <div className="container px-4 flex justify-center">
           <div className="text-lg font-semibold">智能小客服</div>
         </div>
       </header>
 
       {/* 占位高度 */}
-      <div className="h-16" />
+      {/*  <div className="h-16" /> */}
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto px-4 pb-20">
-        <div className="container  mx-auto">
-          <div className=" mt-10 p-6 bg-white border rounded-lg shadow-lg">
-            <ChatBox />
-          </div>
+      <main className="min-h-[calc(100vh)] overflow-y-auto px-4 pt-4 pb-20 container mx-auto">
+        <div className=" mt-10 p-6 bg-white border rounded-lg shadow-lg">
+          <ChatBox />
         </div>
       </main>
 
