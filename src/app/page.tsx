@@ -15,7 +15,19 @@ export default function MyGPTChatPage() {
       <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#F87171]/70 to-[#60A5FA]/90   shadow z-50 h-16 items-center">
         <div className="container flex  gap-2 mx-auto py-2 pl-8">
           <Bus className="w-8 h-8 " />
-          <span className="">首都臺北汽車客運 AI 智慧客服</span>
+          <span className=""> AI 智慧客服</span>
+          <button
+            /*  onClick={() =>
+            setMessages((prev) => [
+              ...prev,
+              { role: "cards", content: "menuCards" },
+            ])
+          } */
+            className=" bottom-24 left-4 p-3 bg-white rounded-sm shadow-md border hover:bg-gray-100 transition"
+            title="選單快速鍵"
+          >
+            選單
+          </button>
         </div>
       </header>
 
