@@ -27,7 +27,7 @@ export default function CardCarousel({ cards, onSelect }: Props) {
 
   return (
     <div className="overflow-hidden" ref={emblaRef}>
-      <div className="flex gap-4 ml-[72px]">
+      <div className="flex gap-4 ml-[72px] ">
         {cards.map((card, index) => (
           <div
             key={index}
@@ -40,13 +40,15 @@ export default function CardCarousel({ cards, onSelect }: Props) {
               height={200}
               className="rounded-lg mb-2 object-fill w-full h-40"
             />
-            <h3 className="text-lg font-bold text-gray-800">{card.title}</h3>
+            <h3 className="text-lg font-bold text-gray-800 px-2">
+              {card.title}
+            </h3>
             <h6 className="text-lg font-bold text-gray-400 px-4">
               {card.subTitle}
             </h6>
             <div className="h-px bg-gray-300 my-3 mx-4"></div>
 
-            <div className="flex flex-col space-y-2 items-center">
+            <div className="flex flex-col space-y-2 items-center my-4">
               {card.links.map((link, i) => (
                 <button
                   key={i}
