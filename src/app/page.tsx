@@ -23,8 +23,8 @@ export default function MyGPTChatPage() {
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto px-4 pb-20">
-        <div className="container">
-          <div className="max-w-lg mx-auto mt-10 p-6 bg-white border rounded-lg shadow-lg">
+        <div className="container  mx-auto">
+          <div className=" mt-10 p-6 bg-white border rounded-lg shadow-lg">
             <ChatBox />
           </div>
         </div>

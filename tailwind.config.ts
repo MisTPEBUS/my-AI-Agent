@@ -19,7 +19,8 @@ const config: Config = {
         "2xl": "3rem",
       },
       screens: {
-        sm: "640px",
+        sm: "100%", // 手機：佔滿
+        lg: "1296px", // 桌機寬度為 1296px
       },
     },
     extend: {
