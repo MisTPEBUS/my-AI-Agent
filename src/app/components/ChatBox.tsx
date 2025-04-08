@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import axios from "axios";
 import Fuse from "fuse.js";
 
@@ -40,7 +46,7 @@ const menuCards: CardProps[] = [
 
 const busCards: CardProps[] = [
   {
-    image: "/images/tpebus.png",
+    image: "",
     title: "【南環幹線】路線",
     subTitle: "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路。",
     links: [
@@ -50,7 +56,7 @@ const busCards: CardProps[] = [
     ],
   },
   {
-    image: "/images/tpebus.png",
+    image: "",
     title: "【棕7】路線",
     subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
     links: [
@@ -60,7 +66,7 @@ const busCards: CardProps[] = [
     ],
   },
   {
-    image: "/images/tpebus.png",
+    image: "",
     title: "【8】路線",
     subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
     links: [
@@ -81,7 +87,7 @@ const getAnswer = (input: string): string | null => {
   return result.length > 0 ? result[0].item.answer : null;
 };
 
-const ChatBox = () => {
+const ChatBox = forwardRef((_, ref) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
@@ -93,17 +99,15 @@ const ChatBox = () => {
   const [input, setInput] = useState("");
   const chatRef = useRef<HTMLDivElement>(null);
   const token = process.env.NEXT_PUBLIC_OPENAI_KEY;
-
-  const { start, isListening } = useSpeechRecognition();
-  const hasMounted = useRef(false); // 👈 新增這行
-
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
+  const { start, isListening } = useSpeechRecognition();
+  const hasMounted = useRef(false);
+
   useEffect(() => {
-    // 每次 messages 更新時自動滾動
     if (!hasMounted.current) {
       hasMounted.current = true;
-      return; // ⛔ 初次不滾動
+      return;
     }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -122,6 +126,10 @@ const ChatBox = () => {
     setInput(text);
     handleSubmit(undefined, text);
   };
+
+  useImperativeHandle(ref, () => ({
+    handleCardSelect,
+  }));
 
   const handleSubmit = async (e?: React.FormEvent, overrideInput?: string) => {
     if (e) e.preventDefault();
@@ -201,7 +209,6 @@ const ChatBox = () => {
   };
 
   return (
-    /* mx-auto border rounded p-4 h-[600px] flex flex-col */
     <div className="">
       <div ref={chatRef} className="flex-1 overflow-y-auto space-y-4 pr-2">
         {messages.map((msg, index) => (
@@ -215,6 +222,7 @@ const ChatBox = () => {
         ))}
         <div ref={bottomRef} />
       </div>
+
       <form
         onSubmit={handleSubmit}
         className="fixed bottom-0 left-0 w-full px-4 py-2 bg-white border-t flex items-center gap-2"
@@ -242,6 +250,8 @@ const ChatBox = () => {
       </form>
     </div>
   );
-};
+});
+
+ChatBox.displayName = "ChatBox";
 
 export default ChatBox;

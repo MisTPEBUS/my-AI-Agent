@@ -31,16 +31,23 @@ export default function CardCarousel({ cards, onSelect }: Props) {
         {cards.map((card, index) => (
           <div
             key={index}
-            className="w-[240px] max-w-xs bg-white rounded-2xl shadow-md object-fit: fill flex-shrink-0 border"
+            className={`w-[240px] max-w-xs rounded-2xl flex-shrink-0 border transition ${
+              card.image
+                ? "bg-white shadow-md hover:shadow-lg"
+                : "bg-gray-50 border-gray-300"
+            }`}
           >
-            <Image
-              src={card.image}
-              alt={card.title}
-              width={280}
-              height={200}
-              className="rounded-lg mb-2 object-fill w-full h-40"
-            />
-            <h3 className="text-lg font-bold text-gray-800 px-2">
+            {card.image && (
+              <Image
+                src={card.image}
+                alt={card.title}
+                width={280}
+                height={200}
+                className="rounded-t-2xl object-cover w-full h-40"
+              />
+            )}
+
+            <h3 className="text-lg font-bold text-gray-800 px-2 mt-2">
               {card.title}
             </h3>
             <h6 className="text-lg font-bold text-gray-400 px-4">

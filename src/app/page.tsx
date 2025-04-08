@@ -5,20 +5,27 @@ import { Bus } from "lucide-react";
 
 import ChatBox from "./components/ChatBox";
 import { Button } from "./components/ui/button";
+import SheetSide from "./SheetSide";
+import { useRef } from "react";
 
 /* const VoiceInput = dynamic(() => import("./components/VoiceInput/VoiceInput"), {
   ssr: false, // 強制只在 client render
 }); */
 
 export default function MyGPTChatPage() {
+  const chatBoxRef = useRef<{ handleCardSelect: (text: string) => void }>(null);
   return (
     <div className=" flex flex-col min-h-screen bg-gray-50 px-4 py-4 md:py-0 md:px-0 ">
-      <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#F87171]/70 to-[#60A5FA]/90   shadow z-50 h-16 items-center">
+      <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#F87171]/70 to-[#60A5FA]/90   shadow z-50 h-24 items-center">
         <div className="container flex  gap-2 mx-auto py-2 pl-8 justify-between">
-          <div className="flex">
-            <Bus className="w-8 h-8 mr-4" />
-            <span className=""> AI 智慧客服</span>
+          <div>
+            <div className="flex">
+              <Bus className="w-8 h-8 mr-4" />
+              <span className=""> AI 智慧車長</span>
+            </div>
+            捷運新店站（新店路）
           </div>
+
           <Button
             /*  onClick={() =>
             setMessages((prev) => [
@@ -32,15 +39,18 @@ export default function MyGPTChatPage() {
             選單
           </Button>
         </div>
+        <SheetSide
+          onSelect={(text) => chatBoxRef.current?.handleCardSelect(text)}
+        />
       </header>
 
       {/* 占位高度 */}
       {/*  <div className="h-16" /> */}
 
       {/* Main content */}
-      <main className="min-h-[calc(100vh)] overflow-y-auto pt-4 pb-20 container mx-auto">
-        <div className=" mt-10  md:p-6 bg-white  ">
-          <ChatBox />
+      <main className="min-h-[calc(100vh)] overflow-y-auto pt-4 pb-20 container mx-auto mt-16">
+        <div className=" mt-10  md:p-6 bg-white ">
+          <ChatBox ref={chatBoxRef} />
         </div>
       </main>
 
