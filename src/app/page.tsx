@@ -23,7 +23,7 @@ export default function MyGPTChatPage() {
               <span className=""> AI 智慧車長 ~</span>
               <Bus className="w-8 h-8 mr-4" />
             </div>
-            BusStopIcon 捷運新店站（新店路）
+            目前位置－捷運新店站（新店路）
           </div>
 
           {/*    <Button
