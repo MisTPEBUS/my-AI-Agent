@@ -4,7 +4,7 @@ import { Bus } from "lucide-react";
 /* import dynamic from "next/dynamic"; */
 
 import ChatBox from "./components/ChatBox";
-import { Button } from "./components/ui/button";
+
 import SheetSide from "./SheetSide";
 import { useRef } from "react";
 
