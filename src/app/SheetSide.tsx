@@ -46,14 +46,16 @@ export default function SheetSide({ onSelect }: Props) {
           >
             <SheetHeader>
               <SheetTitle className="text-lg font-semibold">
-                功能選單
+                歡迎使用
+                <br />
+                AI智慧駕駛長服務
               </SheetTitle>
               <SheetDescription className="text-sm text-gray-500">
-                請選擇你要操作的項目
+                請選擇你要操作的功能選單項目
               </SheetDescription>
             </SheetHeader>
 
-            <nav className="mt-6 space-y-4 ">
+            <nav className="mt-2 space-y-4 ml-2 ">
               <Section
                 title="都會通 TPASS"
                 icon={<FaTicketAlt className="text-green-600" />}
@@ -119,7 +121,7 @@ function Section({
           <li key={item.text}>
             <button
               onClick={() => onSelect(item.value)}
-              className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 text-xl flex items-center gap-2"
+              className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 text-[16px] flex items-center gap-2"
             >
               <FaInfoCircle /> {item.text}
             </button>
