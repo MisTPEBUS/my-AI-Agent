@@ -16,39 +16,39 @@ export default function MyGPTChatPage() {
   const chatBoxRef = useRef<{ handleCardSelect: (text: string) => void }>(null);
   return (
     <div className=" flex flex-col min-h-screen bg-gray-50 px-4 py-4 md:py-0 md:px-0 ">
-      <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#F87171]/70 to-[#60A5FA]/90   shadow z-50 h-24 items-center">
+      <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#F87171]/70 to-[#60A5FA]/90   shadow z-50 h-20 items-center">
         <div className="container flex  gap-2 mx-auto py-2 pl-8 justify-between">
           <div>
-            <div className="flex">
+            <div className="flex items-center">
+              <span className=""> AI 智慧車長 ~</span>
               <Bus className="w-8 h-8 mr-4" />
-              <span className=""> AI 智慧車長</span>
             </div>
-            捷運新店站（新店路）
+            BusStopIcon 捷運新店站（新店路）
           </div>
 
-          <Button
-            /*  onClick={() =>
+          {/*    <Button
+            onClick={() =>
             setMessages((prev) => [
               ...prev,
               { role: "cards", content: "menuCards" },
             ])
-          } */
+          } 
             className=" bottom-24 left-4 p-3 text-black bg-white rounded-sm shadow-md border hover:bg-gray-100 transition"
             title="選單快速鍵"
           >
             選單
-          </Button>
+          </Button> */}
+          <SheetSide
+            onSelect={(text) => chatBoxRef.current?.handleCardSelect(text)}
+          />
         </div>
-        <SheetSide
-          onSelect={(text) => chatBoxRef.current?.handleCardSelect(text)}
-        />
       </header>
 
       {/* 占位高度 */}
       {/*  <div className="h-16" /> */}
 
       {/* Main content */}
-      <main className="min-h-[calc(100vh)] overflow-y-auto pt-4 pb-20 container mx-auto mt-16">
+      <main className="min-h-[calc(100vh-80px)] overflow-y-auto pt-4 pb-20 container mx-auto mt-4">
         <div className=" mt-10  md:p-6 bg-white ">
           <ChatBox ref={chatBoxRef} />
         </div>

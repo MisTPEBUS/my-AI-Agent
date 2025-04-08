@@ -15,7 +15,7 @@ import {
 
 import { FaBus, FaTicketAlt, FaInfoCircle, FaRegSmile } from "react-icons/fa";
 
-const SIDES = ["top", "right", "bottom", "left"] as const;
+const SIDES = ["top"] as const;
 type SheetSide = (typeof SIDES)[number];
 
 type Props = {
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export default function SheetSide({ onSelect }: Props) {
-  const [side, setSide] = useState<SheetSide>("left");
+  const [side, setSide] = useState<SheetSide>("top");
   console.log(side);
   const handleClick = (action: string) => {
     onSelect(action); // 呼叫 ChatBox 的 handleCardSelect
@@ -31,12 +31,12 @@ export default function SheetSide({ onSelect }: Props) {
   };
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 items-center">
       {SIDES.map((direction) => (
         <Sheet key={direction}>
           <SheetTrigger asChild>
             <Button variant="outline" onClick={() => setSide(direction)}>
-              {direction.toUpperCase()}
+              Menu
             </Button>
           </SheetTrigger>
 
