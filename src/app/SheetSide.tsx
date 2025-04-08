@@ -24,7 +24,7 @@ type Props = {
 
 export default function SheetSide({ onSelect }: Props) {
   const [side, setSide] = useState<SheetSide>("left");
-
+  console.log(side);
   const handleClick = (action: string) => {
     onSelect(action); // 呼叫 ChatBox 的 handleCardSelect
     document.getElementById("close-sheet")?.click(); // 關閉 Sheet
