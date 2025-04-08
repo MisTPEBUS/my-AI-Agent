@@ -17,7 +17,7 @@ export default function MyGPTChatPage() {
   return (
     <div className=" flex flex-col min-h-screen bg-gray-50 px-4 py-4 md:py-0 md:px-0 ">
       <header className=" text-center fixed top-0 left-0 w-full md:text-3xl text-xl  font-bold  px-4 text-black  bg-gradient-to-r from-[#F87171]/70 to-[#60A5FA]/90   shadow z-50 h-20 items-center">
-        <div className="container flex  gap-2 mx-auto py-2 pl-8 justify-between">
+        <div className="container flex  gap-2 mx-auto py-2 pl-4  md:pl-8 justify-between">
           <div>
             <div className="flex items-center">
               <span className=""> AI 智慧車長 ~</span>
