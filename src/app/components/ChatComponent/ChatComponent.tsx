@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { openAiRequest } from "@/app/lib/openai";
 import { useState, useRef, FormEvent } from "react";
@@ -70,3 +70,4 @@ export default function ChatComponent() {
     </div>
   );
 }
+ */
