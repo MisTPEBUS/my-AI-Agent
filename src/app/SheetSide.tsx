@@ -72,6 +72,7 @@ export default function SheetSide({ onSelect }: Props) {
                 items={[
                   { text: "查看路線", value: "/查看路線" },
                   { text: "查看班距", value: "/查看班距" },
+                  { text: "行程規劃", value: "/行程規劃" },
                 ]}
                 onSelect={handleClick}
               />

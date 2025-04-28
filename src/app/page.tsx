@@ -20,10 +20,10 @@ export default function MyGPTChatPage() {
         <div className="container flex  gap-2 mx-auto py-2 pl-4  md:pl-8 justify-between">
           <div>
             <div className="flex items-center">
-              <span className=""> AI 智慧車長 ~</span>
+              <span className=""> AI 智慧客服 ~</span>
               <Bus className="w-8 h-8 mr-4" />
             </div>
-            目前位置－捷運新店站（新店路）
+            目前位置－臺北車站（忠孝）
           </div>
 
           {/*    <Button

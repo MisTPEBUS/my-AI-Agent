@@ -15,6 +15,9 @@ import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
 import { CardProps } from "./CardCoursel";
 import ChatMessage, { Message } from "./ChatMessage";
 import { qaMap } from "@/lib/qaMap";
+import { getLatLng } from "@/utils/geoCoding";
+import { getTDXRoutePlan } from "@/utils/tdxRoutePlan";
+import { generateRouteReplyHTML } from "@/utils/routeReply";
 
 const menuCards: CardProps[] = [
   {
@@ -32,6 +35,7 @@ const menuCards: CardProps[] = [
     links: [
       { text: "查看路線", value: "/查看路線" },
       { text: "查看班距", value: "/查看班距" },
+      { text: "行程規劃", value: "/行程規劃" },
     ],
   },
   {
@@ -45,6 +49,16 @@ const menuCards: CardProps[] = [
 ];
 
 const busCards: CardProps[] = [
+  {
+    image: "",
+    title: "【307】路線",
+    subTitle: "行駛區間為板橋至撫遠街。",
+    links: [
+      { text: "查看路線", value: "/查看307路線" },
+      { text: "查看班距", value: "/查看班距" },
+      { text: "票價查詢", value: "/查詢南環幹線票價" },
+    ],
+  },
   {
     image: "",
     title: "【南環幹線】路線",
@@ -91,10 +105,11 @@ const ChatBox = forwardRef((_, ref) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
-      content: "您現在在[站牌]台北客運捷運新店站（新店路）：請開始你的聊天...",
+      content: "您現在在[站牌]臺北車站（忠孝）：請開始你的聊天...",
     },
     { role: "cards", content: "menuCards" },
   ]);
+  const [planningMode, setPlanningMode] = useState(false);
 
   const [input, setInput] = useState("");
   const chatRef = useRef<HTMLDivElement>(null);
@@ -141,7 +156,72 @@ const ChatBox = forwardRef((_, ref) => {
 
     setMessages(newMessages);
     setInput("");
+    if (planningMode) {
+      setPlanningMode(false); // 關閉規劃模式
+      const destination = finalInput;
+      const toLocation = await getLatLng(destination);
+      // 1. 查GPS
+      const fromLatLng = { lat: 25.047743, lng: 121.516273 };
+      if (!toLocation) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "system", content: "❌ 找不到該地點，請重新輸入。" },
+        ]);
+        return;
+      }
+      console.log(
+        `🚏 出發地：台北車站（忠孝） (${fromLatLng.lat}, ${fromLatLng.lng})\n🏁 目的地：${destination} (${toLocation.lat}, ${toLocation.lng})`
+      );
 
+      //2. 呼叫TDX API
+      try {
+        const tdxResult = await getTDXRoutePlan(toLocation.lat, toLocation.lng);
+        const routes = tdxResult.data?.routes;
+        console.log("routes:", routes);
+        if (!routes || routes.length === 0) {
+          setPlanningMode(true);
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "system",
+              content: "❌ 查無符合的路線，請確認輸入的目的地。",
+            },
+          ]);
+          return;
+        }
+
+        // 看 API 回傳格式調整
+
+        const messageContent = `🚏 出發地：台北車站（忠孝） (${fromLatLng.lat}, ${fromLatLng.lng})\n🏁 目的地：${destination} (${toLocation.lat}, ${toLocation.lng})\n\n`;
+        console.log("TDX Routes:", messageContent);
+        const replyHTML = generateRouteReplyHTML(routes);
+        setMessages((prev) => [
+          ...prev,
+          { role: "system", content: replyHTML },
+        ]);
+        return;
+      } catch (error: unknown) {
+        console.log(error);
+        setMessages((prev) => [
+          ...prev,
+          { role: "system", content: "❌ 無法取得路線規劃，請稍後再試。" },
+        ]);
+        return;
+      }
+    }
+
+    // 2️⃣ 判斷是否要啟動行程規劃
+    if (finalInput.trim() === "/行程規劃") {
+      setPlanningMode(true);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "system",
+          content: "請問您要到哪個地方呢？我可以幫您規劃行程！",
+        },
+      ]);
+      return;
+    }
     setMessages((prev) => [
       ...prev,
       { role: "loading", content: "正在輸入中..." },

@@ -16,7 +16,8 @@ export const openAiRequest = async (messages: Message[]): Promise<string> => {
         messages: [
           {
             role: "system",
-            content: "你必須用繁體中文以及台灣用語回覆我。",
+            content:
+              "請你必須用繁體中文以及台灣用語回覆我，回覆有關交通的內容以搭乘台灣的公車為主。",
           },
           ...messages,
         ],

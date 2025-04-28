@@ -5,6 +5,10 @@ export type QAItem = {
 
 export const qaMap: QAItem[] = [
   {
+    question: "/行程規劃",
+    answer: `請問您要到哪個地方呢？我可以幫您規劃行程！`,
+  },
+  {
     question: "/查詢南環幹線票價",
     answer: ` <div class="bg-white shadow-md rounded-xl p-4">
       <h2 class="text-lg font-bold text-blue-700 mb-2">🟠 南環幹線</h2>
@@ -37,6 +41,11 @@ export const qaMap: QAItem[] = [
         </li>
       </ul>
     </div>
+      `,
+  },
+  {
+    question: "/行程規劃",
+    answer: `好的，請問您想安排什麼樣的行程呢？例如要前往哪裡，希望進行哪種類型的活動。
       `,
   },
   {
@@ -92,6 +101,20 @@ export const qaMap: QAItem[] = [
           <img
             src="/images/8路線圖.png"
             alt="8路線圖"
+            class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
+          />
+        </a>
+      </div>
+      `,
+  },
+  {
+    question: "/查看307路線",
+    answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
+        <h2 class="text-lg font-semibold mb-2">🚌 307 路線圖</h2>
+        <a href="/images/307路線圖.png" target="_blank" rel="noopener noreferrer">
+          <img
+            src="/images/307路線圖.png"
+            alt="307路線圖"
             class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
           />
         </a>
