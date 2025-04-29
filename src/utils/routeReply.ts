@@ -15,7 +15,7 @@ export function generateRouteReplyHTML(routes: TDXRoute[]): string {
     const endTime = dayjs(route.end_time).format("YYYY-MM-DD HH:mm");
 
     html += `<div class="p-3 my-2 border rounded-lg bg-gray-50">`;
-    html += `<h3 class="font-bold text-lg mb-2">🚍 第 ${i + 1} 條方案</h3>`;
+    html += `<h3 class="font-bold text-lg mb-2">🚍 方案${i + 1}</h3>`;
     html += `<p>🟢 出發時間：${startTime}<br>`;
     html += `🟢 抵達時間：${endTime}<br>`;
     html += `🟢 總耗時：${hours > 0 ? `${hours} 小時 ` : ""}${minutes} 分<br>`;
