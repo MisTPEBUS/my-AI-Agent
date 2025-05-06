@@ -56,7 +56,7 @@ export const PlaceAutoComplete = ({
     setSuggestions([]);
     onSelect(placeId, description);
   };
-
+  console.log();
   return (
     <div className="relative w-full">
       <input
