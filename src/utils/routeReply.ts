@@ -8,7 +8,7 @@ function roundToNearest15(value: number): number {
 export function generateRouteReplyHTML(routes: TDXRoute[]): string {
   const maxRoutes = Math.min(5, routes.length);
   let html = "";
-
+  console.log(maxRoutes);
   for (let i = 0; i < maxRoutes; i++) {
     const route = routes[i];
     const totalMinutes = Math.round(route.travel_time / 60);
@@ -39,12 +39,16 @@ export function generateRouteReplyHTML(routes: TDXRoute[]): string {
         const meters = Math.round(section.travelSummary.length);
         const durationMin = Math.round(section.travelSummary.duration / 60);
         const toPlace = section.arrival.place.name || "目的地";
-
+        const lat = section.arrival.place.location.lat;
+        const lng = section.arrival.place.location.lng;
         html += `
-          <div class="flex items-start gap-2 text-neutral-700 bg-gray-100 px-3 py-2 rounded-md">
-            🚶‍♂️ <span>步行 ${meters} 公尺（約 ${durationMin} 分）→ <b>${toPlace}</b></span>
-          </div>
-        `;
+        <div class="flex items-start gap-2 text-neutral-700 bg-gray-100 px-3 py-2 rounded-md">
+          🚶‍♂️ <span>
+            步行 ${meters} 公尺（約 ${durationMin} 分）→ <b>${toPlace}</b>
+            <button data-lat="${lat}" data-lng="${lng}" class="text-blue-600 underline ml-2 show-map-btn">查看地圖</button>
+          </span>
+        </div>
+      `;
       } else if (section.type === "transit") {
         const from = section.departure.place.name || "起點";
         const to = section.arrival.place.name || "終點";

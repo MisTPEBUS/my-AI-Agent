@@ -140,6 +140,21 @@ const ChatBox = forwardRef((_, ref) => {
   };
 
   const handleCardSelect = (text: string) => {
+    if (text.startsWith("/show-map")) {
+      const url = new URLSearchParams(text.replace("/show-map?", ""));
+      const lat = parseFloat(url.get("lat") || "0");
+      const lng = parseFloat(url.get("lng") || "0");
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "map",
+          content: JSON.stringify({ lat, lng }),
+        },
+      ]);
+      return;
+    }
+
     setInput(text);
     handleSubmit(undefined, text);
   };

@@ -1,6 +1,6 @@
-// components/ChatMessage.tsx
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import CardCarousel, { CardProps } from "./CardCoursel";
 
@@ -22,6 +22,24 @@ export default function ChatMessage({
   busCards,
   menuCards,
 }: Props) {
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains("show-map-btn")) {
+        const lat = target.getAttribute("data-lat");
+        const lng = target.getAttribute("data-lng");
+        if (lat && lng && onCardSelect) {
+          onCardSelect(`/show-map?lat=${lat}&lng=${lng}`);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [onCardSelect]);
+
   if (message.role === "user") {
     return (
       <div className="flex justify-end items-center gap-2">
@@ -72,7 +90,22 @@ export default function ChatMessage({
     );
   }
 
-  // 系統訊息/HTML
+  if (message.role === "map") {
+    const { lat, lng } = JSON.parse(message.content);
+    return (
+      <div className="my-2">
+        <div className="text-sm text-neutral-600 mb-1">🗺️ 地圖位置：</div>
+        <iframe
+          className="rounded w-full h-[300px]"
+          loading="lazy"
+          allowFullScreen
+          src={`https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`}
+        ></iframe>
+      </div>
+    );
+  }
+
+  // 系統訊息 / HTML
   return (
     <div className="items-center gap-2">
       <Image
