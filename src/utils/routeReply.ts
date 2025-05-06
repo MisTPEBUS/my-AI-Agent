@@ -92,8 +92,8 @@ export function generateRouteReplyHTML(routes: TDXRoute[]): string {
   </div>
 
    <!-- 搭乘段落 -->
-    <div class="bg-yellow-50 border-l-4 border-amber-400 px-4 py-3 rounded-lg">
-      <div class="text-amber-700 font-semibold text-base mb-1">
+   <div class="bg-blue-50 border-l-4 border-blue-400 px-4 py-3 rounded-lg">
+  <div class="text-blue-700 font-semibold text-base mb-1">
         🚌 轉乘 <span class="font-bold text-lg">[306藍洲→凌雲五村]</span>
       </div>
       <div class="ml-4 space-y-1 text-neutral-700">
