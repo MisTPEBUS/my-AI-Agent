@@ -2,7 +2,7 @@
 const nextConfig = {
   /* config options here */
   experimental: {
-    partialPrerendering: true,
+    /*   partialPrerendering: true, */
   },
 };
 
