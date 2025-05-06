@@ -6,8 +6,8 @@ export const getTDXRoutePlan = async (
   destinationLat: number,
   destinationLng: number
 ): Promise<TDXRoutePlanResponse> => {
-  const originLat = 25.0530480941951;
-  const originLng = 121.587747401426;
+  const originLat = 25.047743;
+  const originLng = 121.516273;
   const now = new Date();
   const nowInTaiwan = new Date(now.getTime() + 8 * 60 * 60 * 1000);
   const departTime = new Date(nowInTaiwan.getTime() + 1 * 15 * 60 * 1000);
@@ -16,10 +16,9 @@ export const getTDXRoutePlan = async (
 
   const token = await getTDXAccessToken();
   const url = "https://tdx.transportdata.tw/api/maas/routing";
-  destinationLat = 25.0465408;
-  destinationLng = 121.5167218;
+
   console.log(`🚏 出發地： 南港路三段 (${originLat}, ${originLng})\n
-  🏁 目的地：台北車站（忠孝）(${destinationLat}, ${destinationLng})\n\n`);
+  🏁 目的地：(${destinationLat}, ${destinationLng})\n\n`);
   const { data } = await axios.get<TDXRoutePlanResponse>(url, {
     params: {
       origin: `${originLat},${originLng}`,

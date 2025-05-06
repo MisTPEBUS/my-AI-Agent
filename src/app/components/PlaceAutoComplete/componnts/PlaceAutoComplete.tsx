@@ -7,13 +7,11 @@ interface Prediction {
   place_id: string;
 }
 
-interface CustomPlaceAutocompleteProps {
+interface PlaceAutoCompleteProps {
   onSelect: (placeId: string, description: string) => void;
 }
 
-export const PlaceAutoComplete = ({
-  onSelect,
-}: CustomPlaceAutocompleteProps) => {
+export const PlaceAutoComplete = ({ onSelect }: PlaceAutoCompleteProps) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Prediction[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -21,14 +19,12 @@ export const PlaceAutoComplete = ({
     null
   );
 
-  // 初始化 Google Autocomplete Service
   useEffect(() => {
     if (typeof window !== "undefined" && window.google) {
       serviceRef.current = new window.google.maps.places.AutocompleteService();
     }
   }, []);
 
-  // 根據輸入字串取得建議
   useEffect(() => {
     if (!query || !serviceRef.current) {
       setSuggestions([]);
@@ -38,41 +34,36 @@ export const PlaceAutoComplete = ({
     serviceRef.current.getPlacePredictions(
       {
         input: query,
-        types: ["(cities)"],
+
         componentRestrictions: { country: "tw" },
       },
-      (predictions, status) => {
-        if (status === "OK" && predictions) {
-          setSuggestions(predictions);
-        } else {
-          setSuggestions([]);
-        }
+      (predictions) => {
+        setSuggestions(predictions || []);
       }
     );
   }, [query]);
 
   const handleSelect = (placeId: string, description: string) => {
-    setQuery(description);
-    setSuggestions([]);
     onSelect(placeId, description);
+    setQuery(""); // 清除輸入
+    setSuggestions([]); // 清除建議
   };
-  console.log();
+
   return (
     <div className="relative w-full">
       <input
         ref={inputRef}
         type="text"
-        placeholder="輸入城市（例如：臺北）"
+        placeholder="請輸入目的地（例如：南港展覽館）"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className="w-full p-2 border rounded"
       />
-
       {suggestions.length > 0 && (
-        <ul className="absolute left-0 right-0 mt-1 bg-white border rounded z-10 max-h-60 overflow-y-auto">
-          {suggestions.map((sug) => (
+        <ul className="absolute bottom-full mb-1 left-0 right-0 bg-white border rounded z-10 max-h-60 overflow-y-auto shadow-lg">
+          {suggestions.map((sug, index) => (
             <li
-              key={sug.place_id}
+              key={sug.place_id || index}
               onClick={() => handleSelect(sug.place_id, sug.description)}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-sm"
             >

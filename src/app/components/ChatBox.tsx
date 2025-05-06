@@ -18,6 +18,7 @@ import { qaMap } from "@/lib/qaMap";
 import { getLatLng } from "@/utils/geoCoding";
 import { getTDXRoutePlan } from "@/utils/tdxRoutePlan";
 import { generateRouteReplyHTML } from "@/utils/routeReply";
+import { PlaceAutoComplete } from "./PlaceAutoComplete/componnts/PlaceAutoComplete";
 
 const menuCards: CardProps[] = [
   {
@@ -318,13 +319,22 @@ const ChatBox = forwardRef((_, ref) => {
         >
           <Mic size={20} />
         </button>
-        <input
-          type="text"
-          placeholder="開始聊天..."
-          className="w-full p-2 border rounded"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
+        {planningMode ? (
+          <PlaceAutoComplete
+            onSelect={(placeId, description) => {
+              setInput(description);
+              handleSubmit(undefined, description); // ✅ 觸發送出
+            }}
+          />
+        ) : (
+          <input
+            type="text"
+            placeholder="開始聊天..."
+            className="w-full p-2 border rounded"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        )}
         <button type="submit" className="p-2 rounded bg-blue-500 text-white">
           <Send size={20} />
         </button>
