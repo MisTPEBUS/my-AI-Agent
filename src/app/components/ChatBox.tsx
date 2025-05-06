@@ -21,6 +21,15 @@ import { generateRouteReplyHTML } from "@/utils/routeReply";
 
 const menuCards: CardProps[] = [
   {
+    image: "/images/BusInfo.png",
+    title: "【搭乘資訊】",
+    links: [
+      { text: "行程規劃", value: "/行程規劃" },
+      { text: "查看路線", value: "/查看路線" },
+      { text: "查看班距", value: "/查看班距" },
+    ],
+  },
+  {
     image: "/images/tpass.png",
     title: "【都會通TPASS】",
     links: [
@@ -29,15 +38,7 @@ const menuCards: CardProps[] = [
       { text: "效期計算", value: "/都會通效期計算" },
     ],
   },
-  {
-    image: "/images/BusInfo.png",
-    title: "【搭乘資訊】",
-    links: [
-      { text: "查看路線", value: "/查看路線" },
-      { text: "查看班距", value: "/查看班距" },
-      { text: "行程規劃", value: "/行程規劃" },
-    ],
-  },
+
   {
     image: "/images/help.png",
     title: "【乘客服務】",

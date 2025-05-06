@@ -37,6 +37,11 @@ export default function CardCarousel({ cards, onSelect }: Props) {
                 : "bg-gray-50 border-gray-300"
             }`}
           >
+            {index === 0 && (
+              <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded shadow-md z-10">
+                NEW
+              </span>
+            )}
             {card.image && (
               <Image
                 src={card.image}

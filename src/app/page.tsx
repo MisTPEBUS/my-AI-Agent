@@ -7,6 +7,7 @@ import ChatBox from "./components/ChatBox";
 
 import SheetSide from "./SheetSide";
 import { useRef } from "react";
+import MyLocationMap from "./components/MyLocationMap/page";
 
 /* const VoiceInput = dynamic(() => import("./components/VoiceInput/VoiceInput"), {
   ssr: false, // 強制只在 client render
@@ -50,6 +51,7 @@ export default function MyGPTChatPage() {
       {/* Main content */}
       <main className="min-h-[calc(100vh-80px)] overflow-y-auto pt-4 pb-20 container mx-auto mt-4">
         <div className=" mt-10  md:p-6 bg-white ">
+          <MyLocationMap></MyLocationMap>
           <ChatBox ref={chatBoxRef} />
         </div>
       </main>

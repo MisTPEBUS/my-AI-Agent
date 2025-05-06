@@ -7,8 +7,7 @@ export const getLatLng = async (
   address: string
 ): Promise<{ lat: number; lng: number } | null> => {
   try {
-    console.log(address);
-    console.log("GEOCODING_API_KEY", GEOCODING_API_KEY);
+    console.log("address :", address);
     const { data } = await axios.get(GEOCODING_URL, {
       params: {
         address,

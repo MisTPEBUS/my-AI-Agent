@@ -1,9 +1,11 @@
 // components/ChatMessage.tsx
+"use client";
+
 import Image from "next/image";
 import CardCarousel, { CardProps } from "./CardCoursel";
 
 export type Message = {
-  role: "user" | "system" | "loading" | "cards";
+  role: "user" | "system" | "loading" | "cards" | "map";
   content: string;
 };
 

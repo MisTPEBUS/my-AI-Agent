@@ -57,16 +57,6 @@ export default function SheetSide({ onSelect }: Props) {
 
             <nav className="mt-2 space-y-4 ml-2 ">
               <Section
-                title="都會通 TPASS"
-                icon={<FaTicketAlt className="text-green-600" />}
-                items={[
-                  { text: "如何購買", value: "/購買TPASS" },
-                  { text: "都會通使用範圍", value: "/都會通使用範圍" },
-                  { text: "效期計算", value: "/都會通效期計算" },
-                ]}
-                onSelect={handleClick}
-              />
-              <Section
                 title="搭乘資訊"
                 icon={<FaBus className="text-blue-600" />}
                 items={[
@@ -76,6 +66,17 @@ export default function SheetSide({ onSelect }: Props) {
                 ]}
                 onSelect={handleClick}
               />
+              <Section
+                title="都會通 TPASS"
+                icon={<FaTicketAlt className="text-green-600" />}
+                items={[
+                  { text: "如何購買", value: "/購買TPASS" },
+                  { text: "都會通使用範圍", value: "/都會通使用範圍" },
+                  { text: "效期計算", value: "/都會通效期計算" },
+                ]}
+                onSelect={handleClick}
+              />
+
               <Section
                 title="乘客服務"
                 icon={<FaRegSmile className="text-orange-500" />}
