@@ -119,14 +119,13 @@ const ChatBox = forwardRef((_, ref) => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const { start, isListening } = useSpeechRecognition();
-  const hasMounted = useRef(false);
+  /* const hasMounted = useRef(false); */
 
   useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
-      return;
-    }
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const timer = setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 0); // or 100ms to wait for DOM
+    return () => clearTimeout(timer);
   }, [messages]);
 
   useEffect(() => {
