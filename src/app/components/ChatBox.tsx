@@ -107,7 +107,7 @@ const ChatBox = forwardRef((_, ref) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
-      content: "您現在在[站牌]臺北車站（忠孝）：請開始你的聊天...",
+      content: "您現在在[站牌]三重正義重新路口：請開始你的聊天...",
     },
     { role: "cards", content: "menuCards" },
   ]);
