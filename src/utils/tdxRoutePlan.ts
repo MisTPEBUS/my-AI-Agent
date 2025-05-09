@@ -6,8 +6,10 @@ export const getTDXRoutePlan = async (
   destinationLat: number,
   destinationLng: number
 ): Promise<TDXRoutePlanResponse> => {
-  const originLat = 25.047743;
-  const originLng = 121.516273;
+  // 台北車站(忠孝)的經緯度
+  //25.047743, 121.516273
+  const originLat = 25.0617709;
+  const originLng = 121.4974781;
   const now = new Date();
   const nowInTaiwan = new Date(now.getTime() + 8 * 60 * 60 * 1000);
   const departTime = new Date(nowInTaiwan.getTime() + 1 * 15 * 60 * 1000);
@@ -17,22 +19,22 @@ export const getTDXRoutePlan = async (
   const token = await getTDXAccessToken();
   const url = "https://tdx.transportdata.tw/api/maas/routing";
 
-  console.log(`🚏 出發地： 南港路三段 (${originLat}, ${originLng})\n
+  console.log(`🚏 出發地： wu0 (${originLat}, ${originLng})\n
   🏁 目的地：(${destinationLat}, ${destinationLng})\n\n`);
   const { data } = await axios.get<TDXRoutePlanResponse>(url, {
     params: {
       origin: `${originLat},${originLng}`,
       destination: `${destinationLat},${destinationLng}`,
-      gc: 1.0,
+      gc: 0.0,
       top: 10,
-      transit: "5",
+      transit: "5,6",
       transfer_time: "0,60",
       depart: formatTime(departTime),
       arrival: formatTime(arrivalTime),
       first_mile_mode: 0,
-      first_mile_time: 60,
+      first_mile_time: 20,
       last_mile_mode: 0,
-      last_mile_time: 60,
+      last_mile_time: 20,
     },
     headers: {
       Authorization: `Bearer ${token}`,

@@ -24,7 +24,7 @@ export default function MyGPTChatPage() {
               <span className=""> AI 智慧客服 ~</span>
               <Bus className="w-8 h-8 mr-4" />
             </div>
-            目前位置－臺北車站（忠孝）
+            目前位置－三重正義重新路口
           </div>
 
           {/*    <Button

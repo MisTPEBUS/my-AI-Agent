@@ -177,7 +177,7 @@ const ChatBox = forwardRef((_, ref) => {
       const destination = finalInput;
       const toLocation = await getLatLng(destination);
       // 1. 查GPS
-      const fromLatLng = { lat: 25.047743, lng: 121.516273 };
+      const fromLatLng = { lat: 25.063047, lng: 121.497543 };
       if (!toLocation) {
         setMessages((prev) => [
           ...prev,
@@ -186,7 +186,7 @@ const ChatBox = forwardRef((_, ref) => {
         return;
       }
       console.log(
-        `🚏 出發地：台北車站（忠孝） (${fromLatLng.lat}, ${fromLatLng.lng})\n🏁 目的地：${destination} (${toLocation.lat}, ${toLocation.lng})`
+        `🚏 出發地：天台廣場 (${fromLatLng.lat}, ${fromLatLng.lng})\n🏁 目的地：${destination} (${toLocation.lat}, ${toLocation.lng})`
       );
 
       //2. 呼叫TDX API
@@ -208,7 +208,7 @@ const ChatBox = forwardRef((_, ref) => {
 
         // 看 API 回傳格式調整
 
-        const messageContent = `🚏 出發地：台北車站（忠孝） (${fromLatLng.lat}, ${fromLatLng.lng})\n🏁 目的地：${destination} (${toLocation.lat}, ${toLocation.lng})\n\n`;
+        const messageContent = `🚏 出發地：正義重新路口 (${fromLatLng.lat}, ${fromLatLng.lng})\n🏁 目的地：${destination} (${toLocation.lat}, ${toLocation.lng})\n\n`;
         console.log("TDX Routes:", messageContent);
         const replyHTML = generateRouteReplyHTML(routes);
         setMessages((prev) => [

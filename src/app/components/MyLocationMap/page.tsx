@@ -11,7 +11,7 @@ const options = {
 };
 
 export default function MyLocationMap() {
-  const center = { lat: 25.047743, lng: 121.516273 };
+  const center = { lat: 25.063047, lng: 121.497543 };
 
   return (
     <LoadScript
