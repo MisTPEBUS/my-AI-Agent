@@ -76,14 +76,17 @@ export function generateRouteReplyHTML(routes: TDXRoute[]): string {
                 isTransfer ? "轉乘" : "搭乘"
               } <span class="font-bold text-lg">[${vehicle}]</span>
             </div>
-            <div class="ml-4 space-y-1 text-neutral-700">
+            <div class="ml-4 space-y-1 flex text-neutral-700">
               <p>上車站：<b>${from}</b></p>
-              <p>下車站：<b>${to}</b></p>
-              <p>票價：<span class="text-green-600 font-semibold">${fare}</span></p>
+              <p>下車站：<b>${to}</b></p>            
             </div>
+            <div class="ml-4 space-y-1 flex text-neutral-700">
+              <p>票價：<span class="text-green-600 font-semibold">${fare}</span></p>        
+            </div>
+            
             ${
               stops
-                ? `<div class="ml-4 mt-1 text-xs text-gray-500 border-t pt-2">🛣️ 途中經過：${stops}</div>`
+                ? `<div class="ml-4 mt-1 text-xs text-gray-500 border-t pt-2"> 途中經過：${stops}</div>`
                 : ""
             }
           </div>
@@ -112,7 +115,8 @@ export function generateRouteReplyHTML(routes: TDXRoute[]): string {
         <div>⏳ <b>耗時：</b>${
           hours > 0 ? `${hours} 小時 ` : ""
         }${minutes} 分</div>
-        <div>💰 <b>票價：</b>${totalFare} 元</div>
+         
+        <div>💰 <b>總票價：</b>${totalFare} 元</div>
       </div>
       <div class="text-center text-xs text-gray-400 italic pt-2">
         預估時間與價格以實際搭乘為主
