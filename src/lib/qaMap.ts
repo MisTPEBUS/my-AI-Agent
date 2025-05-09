@@ -66,6 +66,23 @@ export const qaMap: QAItem[] = [
       `,
   },
   {
+    question: "/查詢39票價",
+    answer: ` <div class="bg-white shadow-md rounded-xl p-4">
+      <h2 class="text-lg font-bold text-purple-700 mb-2">🟣 8 路公車</h2>
+      <ul class="text-sm text-gray-700 space-y-1">
+        <li>📍 收費方式：<strong>一段票</strong></li>
+        <li>📌 分段緩衝區：無</li>
+        <li>💰 全票：15 元</li>
+        <li>👦 學生票：12 元（悠遊卡）</li>
+        <li>🧓 敬老／愛心票：8 元</li>
+        <li>
+          🔗 <a href="https://ebus.gov.taipei/EBus/VsSimpleMap?routeid=0100003900&gb=0" target="_blank" class="text-blue-600 underline">查看路線圖</a>
+        </li>
+      </ul>
+    </div>
+      `,
+  },
+  {
     question: "/查看南環幹線路線",
     answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
         <h2 class="text-lg font-semibold mb-2">🚌 南環幹線 路線圖</h2>
@@ -73,6 +90,20 @@ export const qaMap: QAItem[] = [
           <img
             src="/images/南環幹線路線圖.png"
             alt="南環幹線路線圖"
+            class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
+          />
+        </a>
+      </div>
+      `,
+  },
+  {
+    question: "/查看39路線",
+    answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
+        <h2 class="text-lg font-semibold mb-2">🚌 39 路線圖</h2>
+        <a href="/images/39路線圖.png" target="_blank" rel="noopener noreferrer">
+          <img
+            src="/images/39路線圖.png"
+            alt="39路線圖"
             class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
           />
         </a>
