@@ -61,7 +61,7 @@ const busCards: CardProps[] = [
       { text: "票價查詢", value: "/查詢39票價" },
     ],
   },
-  /*  {
+    {
     image: "",
     title: "【307】路線",
     subTitle: "行駛區間為板橋至撫遠街。",
@@ -70,7 +70,7 @@ const busCards: CardProps[] = [
       { text: "查看班距", value: "/查看班距" },
       { text: "票價查詢", value: "/查詢南環幹線票價" },
     ],
-  }, */
+  }, 
   /* {
     image: "",
     title: "【南環幹線】路線",

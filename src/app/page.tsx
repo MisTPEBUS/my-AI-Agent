@@ -9,10 +9,6 @@ import SheetSide from "./SheetSide";
 import { useRef } from "react";
 import MyLocationMap from "./components/MyLocationMap/page";
 
-/* const VoiceInput = dynamic(() => import("./components/VoiceInput/VoiceInput"), {
-  ssr: false, // 強制只在 client render
-}); */
-
 export default function MyGPTChatPage() {
   const chatBoxRef = useRef<{ handleCardSelect: (text: string) => void }>(null);
   return (
