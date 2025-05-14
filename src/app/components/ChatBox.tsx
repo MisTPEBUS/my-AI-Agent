@@ -66,20 +66,16 @@ const ChatBox = forwardRef((_, ref) => {
   const handleMicClick = () => {
     start(({ transcript }) => {
       const text = transcript.trim();
-      const lower = text.toLowerCase();
+      /*       const lower = text.toLowerCase(); */
 
       setInput(text);
 
       if (
-        !micSubmitLock.current &&
-        (lower.includes("送出") || lower.includes("發送"))
+        !micSubmitLock.current /* &&
+        (lower.includes("送出") || lower.includes("發送")) */
       ) {
         micSubmitLock.current = true;
         handleSubmit(undefined, text);
-
-        setTimeout(() => {
-          micSubmitLock.current = false;
-        }, 1500); // 1.5秒後允許下一次送出
       }
     });
   };
