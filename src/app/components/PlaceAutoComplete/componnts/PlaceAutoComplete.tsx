@@ -56,7 +56,7 @@ export const PlaceAutoComplete = ({
     <div className="relative w-full">
       <input
         type="text"
-        placeholder="請輸入目的地（例如：南港展覽館）"
+        placeholder="請輸入目的地（例如：南 港 展 覽 館）"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full p-2 border rounded"
