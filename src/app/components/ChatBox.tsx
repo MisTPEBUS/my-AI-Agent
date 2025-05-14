@@ -61,7 +61,7 @@ const busCards: CardProps[] = [
       { text: "票價查詢", value: "/查詢39票價" },
     ],
   },
-    {
+  {
     image: "",
     title: "【307】路線",
     subTitle: "行駛區間為板橋至撫遠街。",
@@ -70,7 +70,7 @@ const busCards: CardProps[] = [
       { text: "查看班距", value: "/查看班距" },
       { text: "票價查詢", value: "/查詢南環幹線票價" },
     ],
-  }, 
+  },
   /* {
     image: "",
     title: "【南環幹線】路線",
@@ -330,7 +330,10 @@ const ChatBox = forwardRef((_, ref) => {
       </div>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!planningMode) handleSubmit();
+        }}
         className="fixed bottom-0 left-0 w-full px-4 py-2 bg-white border-t flex items-center gap-2"
       >
         <button
@@ -345,9 +348,12 @@ const ChatBox = forwardRef((_, ref) => {
         </button>
         {planningMode ? (
           <PlaceAutoComplete
+            value={input}
+            onChange={setInput}
             onSelect={(placeId, description) => {
               setInput(description);
-              handleSubmit(undefined, description); // ✅ 觸發送出
+              handleSubmit(undefined, description);
+              // ✅ 觸發送出
             }}
           />
         ) : (
@@ -359,6 +365,7 @@ const ChatBox = forwardRef((_, ref) => {
             onChange={(e) => setInput(e.target.value)}
           />
         )}
+
         <button type="submit" className="p-2 rounded bg-blue-500 text-white">
           <Send size={20} />
         </button>

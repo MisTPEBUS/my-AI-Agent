@@ -2,7 +2,7 @@ import { TDXRoute } from "@/types/tdx";
 /* import dayjs from "dayjs"; */
 
 function roundToNearest15(value: number): number {
-  return Math.round(value / 15) * 15;
+  return Math.floor(value / 15) * 15;
 }
 
 export function generateRouteReplyHTML(routes: TDXRoute[]): string {

@@ -8,13 +8,17 @@ interface Prediction {
 }
 
 interface PlaceAutoCompleteProps {
+  value: string;
+  onChange: (value: string) => void;
   onSelect: (placeId: string, description: string) => void;
 }
 
-export const PlaceAutoComplete = ({ onSelect }: PlaceAutoCompleteProps) => {
-  const [query, setQuery] = useState("");
+export const PlaceAutoComplete = ({
+  value,
+  onChange,
+  onSelect,
+}: PlaceAutoCompleteProps) => {
   const [suggestions, setSuggestions] = useState<Prediction[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
   const serviceRef = useRef<google.maps.places.AutocompleteService | null>(
     null
   );
@@ -26,37 +30,35 @@ export const PlaceAutoComplete = ({ onSelect }: PlaceAutoCompleteProps) => {
   }, []);
 
   useEffect(() => {
-    if (!query || !serviceRef.current) {
+    if (!value || !serviceRef.current) {
       setSuggestions([]);
       return;
     }
 
     serviceRef.current.getPlacePredictions(
       {
-        input: query,
-
+        input: value,
         componentRestrictions: { country: "tw" },
       },
       (predictions) => {
         setSuggestions(predictions || []);
       }
     );
-  }, [query]);
+  }, [value]);
 
   const handleSelect = (placeId: string, description: string) => {
     onSelect(placeId, description);
-    setQuery(""); // 清除輸入
+    onChange(""); // 清除輸入
     setSuggestions([]); // 清除建議
   };
 
   return (
     <div className="relative w-full">
       <input
-        ref={inputRef}
         type="text"
         placeholder="請輸入目的地（例如：南港展覽館）"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className="w-full p-2 border rounded"
       />
       {suggestions.length > 0 && (
@@ -64,7 +66,9 @@ export const PlaceAutoComplete = ({ onSelect }: PlaceAutoCompleteProps) => {
           {suggestions.map((sug, index) => (
             <li
               key={sug.place_id || index}
-              onClick={() => handleSelect(sug.place_id, sug.description)}
+              onClick={() => {
+                handleSelect(sug.place_id, sug.description);
+              }}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-sm"
             >
               {sug.description}

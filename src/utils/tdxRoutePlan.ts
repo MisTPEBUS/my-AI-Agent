@@ -27,7 +27,7 @@ export const getTDXRoutePlan = async (
       destination: `${destinationLat},${destinationLng}`,
       gc: 0.0,
       top: 10,
-      transit: "5,6",
+      transit: "5",
       transfer_time: "0,60",
       depart: formatTime(departTime),
       arrival: formatTime(arrivalTime),
