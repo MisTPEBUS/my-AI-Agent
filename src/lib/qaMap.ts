@@ -111,6 +111,34 @@ export const qaMap: QAItem[] = [
       `,
   },
   {
+    question: "/查看忠孝幹線路線",
+    answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
+        <h2 class="text-lg font-semibold mb-2">🚌 忠孝幹線路線圖</h2>
+        <a href="/images/忠孝幹線路線.png" target="_blank" rel="noopener noreferrer">
+          <img
+            src="/images/忠孝幹線路線.png"
+            alt="忠孝幹線路線"
+            class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
+          />
+        </a>
+      </div>
+      `,
+  },
+  {
+    question: "/查看520路線",
+    answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
+        <h2 class="text-lg font-semibold mb-2">🚌 520 路線圖</h2>
+        <a href="/images/520路線.png" target="_blank" rel="noopener noreferrer">
+          <img
+            src="/images/520路線.png"
+            alt="520路線"
+            class="mx-auto rounded-lg shadow max-w-full cursor-pointer hover:opacity-90 transition"
+          />
+        </a>
+      </div>
+      `,
+  },
+  {
     question: "/查看棕7路線",
     answer: `<div class="bg-white p-4 rounded-xl shadow-md max-w-full text-center">
         <h2 class="text-lg font-semibold mb-2">🚌 棕7 路線圖</h2>

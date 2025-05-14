@@ -13,6 +13,26 @@ export const busCards: CardProps[] = [
   },
   {
     image: "",
+    title: "【忠孝幹線】路線",
+    subTitle: "起訖站名：蘆洲 - 松山車站 。",
+    links: [
+      { text: "查看路線", value: "/查看忠孝幹線路線" },
+      { text: "查看班距", value: "/查看班距" },
+      { text: "票價查詢", value: "/查詢忠孝幹線票價" },
+    ],
+  },
+  {
+    image: "",
+    title: "【520】路線",
+    subTitle: "起訖站名：捷運新北產業園區站 - 捷運民權西路站 。",
+    links: [
+      { text: "查看路線", value: "/查看520路線" },
+      { text: "查看班距", value: "/查看班距" },
+      { text: "票價查詢", value: "/查詢520票價" },
+    ],
+  },
+  {
+    image: "",
     title: "【307】路線",
     subTitle: "行駛區間為板橋至撫遠街。",
     links: [
