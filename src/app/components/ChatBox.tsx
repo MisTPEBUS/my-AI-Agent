@@ -21,6 +21,7 @@ import { generateRouteReplyHTML } from "@/utils/routeReply";
 import { PlaceAutoComplete } from "./PlaceAutoComplete/componnts/PlaceAutoComplete";
 import { busCards } from "../config/bus";
 import { menuCards } from "../config/menu";
+import { toast } from "sonner";
 
 const getAnswer = (input: string): string | null => {
   const fuse = new Fuse(qaMap, { keys: ["question"], threshold: 0.4 });
@@ -64,14 +65,25 @@ const ChatBox = forwardRef((_, ref) => {
   }, [messages]);
 
   const handleMicClick = () => {
+    if (micSubmitLock.current) return; // 防止短時間內重複觸發
+    micSubmitLock.current = true;
+
     start(({ transcript }) => {
       const text = transcript.trim();
-      /*       const lower = text.toLowerCase(); */
+      if (!text) {
+        micSubmitLock.current = false; // 空語音直接解鎖
+        return;
+      }
 
       setInput(text);
+      toast.success("語音輸入已送出！");
 
-      micSubmitLock.current = true;
       handleSubmit(undefined, text);
+
+      // 1.5 秒後解鎖，避免重複送出
+      setTimeout(() => {
+        micSubmitLock.current = false;
+      }, 1500);
     });
   };
 
