@@ -25,6 +25,23 @@ export const qaMap: QAItem[] = [
     </div>
       `,
   },
+  {
+    question: "/查詢忠孝幹線票價",
+    answer: ` <div class="bg-white shadow-md rounded-xl p-4">
+      <h2 class="text-lg font-bold text-blue-700 mb-2">🟠 南環幹線</h2>
+      <ul class="text-sm text-gray-700 space-y-1">
+        <li>📍 收費方式：<strong>二段票</strong></li>
+        <li>📌 分段緩衝區：景美女中至石壁坑</li>
+        <li>💰 全票：15 元／段</li>
+        <li>👦 學生票：12 元（悠遊卡）</li>
+        <li>🧓 敬老／愛心票：8 元／段</li>
+        <li>
+          🔗 <a href="https://ebus.gov.taipei/EBus/VsSimpleMap?routeid=0113000100" target="_blank" class="text-blue-600 underline">查看路線圖</a>
+        </li>
+      </ul>
+    </div>
+      `,
+  },
 
   {
     question: "/查詢棕7票價",
@@ -68,7 +85,7 @@ export const qaMap: QAItem[] = [
   {
     question: "/查詢39票價",
     answer: ` <div class="bg-white shadow-md rounded-xl p-4">
-      <h2 class="text-lg font-bold text-purple-700 mb-2">🟣 8 路公車</h2>
+      <h2 class="text-lg font-bold text-purple-700 mb-2">🟣 39 路公車</h2>
       <ul class="text-sm text-gray-700 space-y-1">
         <li>📍 收費方式：<strong>一段票</strong></li>
         <li>📌 分段緩衝區：無</li>
