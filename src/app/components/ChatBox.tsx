@@ -12,96 +12,15 @@ import Fuse from "fuse.js";
 
 import { Mic, Send } from "lucide-react";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
-import { CardProps } from "./CardCoursel";
+
 import ChatMessage, { Message } from "./ChatMessage";
 import { qaMap } from "@/lib/qaMap";
 import { getLatLng } from "@/utils/geoCoding";
 import { getTDXRoutePlan } from "@/utils/tdxRoutePlan";
 import { generateRouteReplyHTML } from "@/utils/routeReply";
 import { PlaceAutoComplete } from "./PlaceAutoComplete/componnts/PlaceAutoComplete";
-
-const menuCards: CardProps[] = [
-  {
-    image: "/images/BusInfo.png",
-    title: "【搭乘資訊】",
-    links: [
-      { text: "行程規劃", value: "/行程規劃" },
-      { text: "查看路線", value: "/查看路線" },
-      { text: "查看班距", value: "/查看班距" },
-    ],
-  },
-  {
-    image: "/images/tpass.png",
-    title: "【都會通TPASS】",
-    links: [
-      { text: "如何購買", value: "/購買TPASS" },
-      { text: "都會通使用範圍", value: "/都會通使用範圍" },
-      { text: "效期計算", value: "/都會通效期計算" },
-    ],
-  },
-
-  {
-    image: "/images/help.png",
-    title: "【乘客服務】",
-    links: [
-      { text: "遺失物招領", value: "/遺失物招領" },
-      { text: "乘車規定", value: "/乘車規定" },
-    ],
-  },
-];
-
-const busCards: CardProps[] = [
-  {
-    image: "",
-    title: "【39】路線",
-    subTitle: "起訖站名：三重 - 臺北車站 。",
-    links: [
-      { text: "查看路線", value: "/查看39路線" },
-      { text: "查看班距", value: "/查看班距" },
-      { text: "票價查詢", value: "/查詢39票價" },
-    ],
-  },
-  {
-    image: "",
-    title: "【307】路線",
-    subTitle: "行駛區間為板橋至撫遠街。",
-    links: [
-      { text: "查看路線", value: "/查看307路線" },
-      { text: "查看班距", value: "/查看班距" },
-      { text: "票價查詢", value: "/查詢南環幹線票價" },
-    ],
-  },
-  /* {
-    image: "",
-    title: "【南環幹線】路線",
-    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至新店區安康路。",
-    links: [
-      { text: "查看路線", value: "/查看南環幹線路線" },
-      { text: "查看班距", value: "/查看班距" },
-      { text: "票價查詢", value: "/查詢南環幹線票價" },
-    ],
-  }, */
-  /* {
-    image: "",
-    title: "【棕7】路線",
-    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
-    links: [
-      { text: "查看路線", value: "/查看棕7路線" },
-      { text: "查看班距", value: "/查看班距" },
-      { text: "票價查詢", value: "/查詢棕7票價" },
-    ],
-  }, */
-  /* {
-    image: "",
-    title: "【8】路線",
-    subTitle: "行駛區間為新店至台北市政府，部分班次延駛至安康路或綠野香坡。",
-    links: [
-      { text: "查看路線", value: "/查看8路線" },
-      { text: "查看班距", value: "/查看班距" },
-      { text: "票價查詢", value: "/查詢棕8票價" },
-    ],
-  }, */
-];
+import { busCards } from "../config/bus";
+import { menuCards } from "../config/menu";
 
 const getAnswer = (input: string): string | null => {
   const fuse = new Fuse(qaMap, { keys: ["question"], threshold: 0.4 });
@@ -127,7 +46,7 @@ const ChatBox = forwardRef((_, ref) => {
   const chatRef = useRef<HTMLDivElement>(null);
   const token = process.env.NEXT_PUBLIC_OPENAI_KEY;
   const bottomRef = useRef<HTMLDivElement | null>(null);
-
+  const micSubmitLock = useRef(false);
   const { start, isListening } = useSpeechRecognition();
   /* const hasMounted = useRef(false); */
 
@@ -145,7 +64,24 @@ const ChatBox = forwardRef((_, ref) => {
   }, [messages]);
 
   const handleMicClick = () => {
-    start(({ transcript }) => setInput(transcript));
+    start(({ transcript }) => {
+      const text = transcript.trim();
+      const lower = text.toLowerCase();
+
+      setInput(text);
+
+      if (
+        !micSubmitLock.current &&
+        (lower.includes("送出") || lower.includes("發送"))
+      ) {
+        micSubmitLock.current = true;
+        handleSubmit(undefined, text);
+
+        setTimeout(() => {
+          micSubmitLock.current = false;
+        }, 1500); // 1.5秒後允許下一次送出
+      }
+    });
   };
 
   const handleCardSelect = (text: string) => {
