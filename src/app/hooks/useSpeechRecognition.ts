@@ -46,7 +46,7 @@ export const useSpeechRecognition = () => {
       clearTimeout(silenceTimerRef.current);
     }
     silenceTimerRef.current = setTimeout(() => {
-      toast.warning("3 秒內未偵測語音，自動停止辨識");
+      toast.warning("5 秒內未偵測語音，自動停止辨識");
       stopRecognition();
     }, 5000);
   };

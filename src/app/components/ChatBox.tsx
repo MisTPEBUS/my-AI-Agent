@@ -70,13 +70,8 @@ const ChatBox = forwardRef((_, ref) => {
 
       setInput(text);
 
-      if (
-        !micSubmitLock.current /* &&
-        (lower.includes("送出") || lower.includes("發送")) */
-      ) {
-        micSubmitLock.current = true;
-        handleSubmit(undefined, text);
-      }
+      micSubmitLock.current = true;
+      handleSubmit(undefined, text);
     });
   };
 
